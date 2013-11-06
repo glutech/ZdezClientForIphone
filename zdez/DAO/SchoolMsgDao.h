@@ -1,0 +1,31 @@
+//
+//  SchoolMsgDao.h
+//  ZdezClientForIphone
+//
+//  Created by Jokinryou Tsui on 13-10-22.
+//  Copyright (c) 2013年 Jokinryou Tsui. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <sqlite3.h>
+#import "SchoolMsg.h"
+
+#define DBFILE_NAME @"zdez.sqlite3"
+
+@interface SchoolMsgDao : NSObject
+{
+    sqlite3 *db;
+}
+
+- (NSString *)applicationDocumentsDirectoryFile;
+
+// 用于创建数据库和schoolMsg表
+- (void)createEditableCopyOfDatabaseIfNeeded;
+
+// 插入schoolMsg方法
+- (int)insert:(NSMutableArray *)schoolMsgArray;
+
+// 查询所有schoolMsg方法
+- (NSMutableArray *)findAll;
+
+@end
