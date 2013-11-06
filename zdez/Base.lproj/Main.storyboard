@@ -100,7 +100,7 @@
                                                     <color key="highlightedColor" red="0.94790777104000312" green="0.94480997408810918" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qo4-Ge-hLs">
-                                                    <rect key="frame" x="20" y="42" width="42" height="21"/>
+                                                    <rect key="frame" x="20" y="42" width="187" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="highlightedColor" red="0.97393310549976531" green="0.97241571363296453" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -108,6 +108,8 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="dateLabel" destination="Qo4-Ge-hLs" id="LS1-G0-Hjv"/>
+                                            <outlet property="titleLabel" destination="JMT-nQ-PfR" id="66H-sf-d95"/>
                                             <segue destination="sJp-Zn-aWI" kind="push" identifier="toWebContent" id="YcK-Va-rQW"/>
                                         </connections>
                                     </tableViewCell>
@@ -187,7 +189,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nSd-sl-KAU">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="MenuItem" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nSd-sl-KAU">
                                                     <rect key="frame" x="20" y="11" width="141" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -196,6 +198,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="menuItem" destination="nSd-sl-KAU" id="YHg-71-63B"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>

@@ -54,8 +54,8 @@
     
     NSString *menuName = self.categoryList[indexPath.row];
     
-    cell.textLabel.text = menuName;
-//    cell.menuItem.text = menuName;
+//    cell.textLabel.text = menuName;
+    cell.menuItem.text = menuName;
     
     return cell;
 }
