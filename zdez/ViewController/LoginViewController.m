@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "LoginService.h"
 
 @interface LoginViewController ()
 
@@ -42,6 +43,11 @@
 //    if ([username.text isEqualToString:@"jokinryou"] && [password.text isEqualToString:@"123"]) {
 //        [self performSegueWithIdentifier:@"login" sender:self];
 //    }
+    LoginService *lservice = [[LoginService alloc]init];
+    NSString *usrname = username.text;
+    NSString *pwd = password.text;
+    [lservice login:usrname secondParameter:pwd];
+    
     [self performSegueWithIdentifier:@"login" sender:self];
     
 }
