@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B11A9114-4BBF-4EB4-854C-56EA673B985A</string>
+	<key>IDESourceControlProjectName</key>
+	<string>zdez</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>577C9B51-3994-4C21-8DC9-A09BEB41DAC3</key>
+		<string>ssh://github.com/glutech/ZdezClientForIphone.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>zdez.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>577C9B51-3994-4C21-8DC9-A09BEB41DAC3</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/glutech/ZdezClientForIphone.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>577C9B51-3994-4C21-8DC9-A09BEB41DAC3</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>577C9B51-3994-4C21-8DC9-A09BEB41DAC3</string>
+			<key>IDESourceControlWCCName</key>
+			<string>zdez</string>
+		</dict>
+	</array>
+</dict>
+</plist>

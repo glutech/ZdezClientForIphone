@@ -15,6 +15,16 @@
     // Override point for customization after application launch.
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
      (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    
+    //判断程序是不是由推送服务完成的
+    if (launchOptions) {
+        // 截取apns推送的消息
+        NSDictionary *pushInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
+        // 获取推送详情
+        NSString *pushInfoStr = [NSString stringWithFormat:@"%@",[pushInfo objectForKey:@"aps"]];
+        NSLog(@"userInfo: %@", pushInfoStr);
+    }
+    
     return YES;
 }
 							
@@ -53,6 +63,13 @@
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
 	NSLog(@"Failed to get token, error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    //处理推送消息
+    NSLog(@"userInfo: %@", userInfo);
+//    NSLog(@"received message: %@", [[userInfo objectForKey:@"aps"] objectForKey:@"alert"]);
 }
 
 @end
