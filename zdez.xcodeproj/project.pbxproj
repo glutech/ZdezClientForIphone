@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37627F8F182A3C3E009B2F87 /* LoginService.m in Sources */ = {isa = PBXBuildFile; fileRef = 37627F8E182A3C3E009B2F87 /* LoginService.m */; };
 		7422E213182A12AA00CD64C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7422E212182A12AA00CD64C7 /* Foundation.framework */; };
 		7422E215182A12AA00CD64C7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7422E214182A12AA00CD64C7 /* CoreGraphics.framework */; };
 		7422E217182A12AA00CD64C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7422E216182A12AA00CD64C7 /* UIKit.framework */; };
@@ -92,6 +93,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		37627F8D182A3C3E009B2F87 /* LoginService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginService.h; sourceTree = "<group>"; };
+		37627F8E182A3C3E009B2F87 /* LoginService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginService.m; sourceTree = "<group>"; };
 		7422E20F182A12AA00CD64C7 /* zdez.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zdez.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7422E212182A12AA00CD64C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7422E214182A12AA00CD64C7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -352,6 +355,8 @@
 				7422E24B182A16E000CD64C7 /* SchoolMsgService.m */,
 				7422E24C182A16E000CD64C7 /* ZdezMsgService.h */,
 				7422E24D182A16E000CD64C7 /* ZdezMsgService.m */,
+				37627F8D182A3C3E009B2F87 /* LoginService.h */,
+				37627F8E182A3C3E009B2F87 /* LoginService.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -698,6 +703,7 @@
 				7422E24E182A16E000CD64C7 /* NewsService.m in Sources */,
 				7422E2BC182A1ACB00CD64C7 /* ASICloudFilesContainerRequest.m in Sources */,
 				7422E2C4182A1ACB00CD64C7 /* ASIS3ObjectRequest.m in Sources */,
+				37627F8F182A3C3E009B2F87 /* LoginService.m in Sources */,
 				7422E2B7182A1ACB00CD64C7 /* ASIInputStream.m in Sources */,
 				7422E2C5182A1ACB00CD64C7 /* ASIS3Request.m in Sources */,
 				7422E2FC182A1BD000CD64C7 /* LoginViewController.m in Sources */,
