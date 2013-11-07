@@ -60,7 +60,11 @@ NSString *deviceid;
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
 	NSLog(@"My token is: %@", deviceToken);
-    deviceid = [[NSString alloc] initWithData:deviceToken  encoding:NSUTF8StringEncoding];
+    //deviceid = [[NSString alloc] initWithData:deviceToken  encoding:NSUTF8StringEncoding];
+    deviceid = [[[[deviceToken description]
+                             stringByReplacingOccurrencesOfString:@"<" withString:@""]
+                            stringByReplacingOccurrencesOfString:@">" withString:@""]
+                           stringByReplacingOccurrencesOfString:@" " withString:@""];
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
