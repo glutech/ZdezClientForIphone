@@ -10,6 +10,6 @@
 
 @implementation User
 
-@synthesize userId, username, name, gender, major, department, school;
+@synthesize userId, username, name, gender, major, department, deviceId;
 
 @end

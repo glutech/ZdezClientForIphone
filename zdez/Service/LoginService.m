@@ -9,6 +9,9 @@
 #import "LoginService.h"
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
+#import "ParseJson.h"
+#import "User.h"
+#import "UserDao.h"
 
 @implementation LoginService
 
@@ -16,7 +19,9 @@ extern NSString* deviceid;
 
 - (int)login:(NSString *)username secondParameter:(NSString *)password
 {
-    NSString *postURL = [NSString stringWithFormat:@"http://112.117.223.20:9080/zdezServer/IosClient_StudentLoginCheck"];
+    int result = 0;
+    
+    NSString *postURL = [NSString stringWithFormat:@"http://localhost:8080/zdezServer/IosClient_StudentLoginCheck"];
     
     ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:postURL]];
     
@@ -28,11 +33,26 @@ extern NSString* deviceid;
     
     [request startSynchronous];
     
+    NSError *error = request.error;
+    if (error == nil) {
+        if ([NSJSONSerialization isValidJSONObject:[NSJSONSerialization JSONObjectWithData:[request responseData] options:NSJSONReadingAllowFragments error:&error]]) {
+            // 返回的数据是合法的json格式数据时，将返回的数据写入本地数据库
+            ParseJson *pj = [[ParseJson alloc] init];
+            User *user = [pj parseLoginChekMsg:[request responseData]];
+            UserDao *dao = [[UserDao alloc] init];
+            [dao saveUserInfo:user];
+            result = 1;
+        } else {
+            // 返回为fail时
+            result = 0;
+        }
+    }
+    
     /*[request responseData]；后半部分留给徐*/
     
     NSLog(@"My token is: %@", deviceid);
     
-    return 0;
+    return result;
 }
 
 @end

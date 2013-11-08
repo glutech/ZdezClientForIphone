@@ -66,7 +66,6 @@
 		7422E2CE182A1ACB00CD64C7 /* MJRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7422E2B0182A1ACB00CD64C7 /* MJRefreshHeaderView.m */; };
 		7422E2D4182A1B0D00CD64C7 /* MenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7422E2D1182A1B0D00CD64C7 /* MenuCell.m */; };
 		7422E2D5182A1B0D00CD64C7 /* MsgCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7422E2D3182A1B0D00CD64C7 /* MsgCell.m */; };
-		7422E2DF182A1B4100CD64C7 /* LoginDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 7422E2D8182A1B4100CD64C7 /* LoginDao.m */; };
 		7422E2E0182A1B4100CD64C7 /* NewsDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 7422E2DA182A1B4100CD64C7 /* NewsDao.m */; };
 		7422E2E1182A1B4100CD64C7 /* SchoolMsgDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 7422E2DC182A1B4100CD64C7 /* SchoolMsgDao.m */; };
 		7422E2E2182A1B4100CD64C7 /* ZdezMsgDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 7422E2DE182A1B4100CD64C7 /* ZdezMsgDao.m */; };
@@ -80,6 +79,7 @@
 		7422E2FE182A1BD000CD64C7 /* MsgListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7422E2F8182A1BD000CD64C7 /* MsgListViewController.m */; };
 		7422E2FF182A1BD000CD64C7 /* WebContentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7422E2FA182A1BD000CD64C7 /* WebContentController.m */; };
 		7422E301182A493B00CD64C7 /* aps_development.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7422E300182A493B00CD64C7 /* aps_development.cer */; };
+		74EDC702182B8FDB0041E2E2 /* UserDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 74EDC701182B8FDB0041E2E2 /* UserDao.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,8 +196,6 @@
 		7422E2D1182A1B0D00CD64C7 /* MenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuCell.m; sourceTree = "<group>"; };
 		7422E2D2182A1B0D00CD64C7 /* MsgCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgCell.h; sourceTree = "<group>"; };
 		7422E2D3182A1B0D00CD64C7 /* MsgCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgCell.m; sourceTree = "<group>"; };
-		7422E2D7182A1B4100CD64C7 /* LoginDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginDao.h; sourceTree = "<group>"; };
-		7422E2D8182A1B4100CD64C7 /* LoginDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginDao.m; sourceTree = "<group>"; };
 		7422E2D9182A1B4100CD64C7 /* NewsDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDao.h; sourceTree = "<group>"; };
 		7422E2DA182A1B4100CD64C7 /* NewsDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDao.m; sourceTree = "<group>"; };
 		7422E2DB182A1B4100CD64C7 /* SchoolMsgDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchoolMsgDao.h; sourceTree = "<group>"; };
@@ -223,6 +221,8 @@
 		7422E2F9182A1BD000CD64C7 /* WebContentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebContentController.h; sourceTree = "<group>"; };
 		7422E2FA182A1BD000CD64C7 /* WebContentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebContentController.m; sourceTree = "<group>"; };
 		7422E300182A493B00CD64C7 /* aps_development.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = aps_development.cer; sourceTree = "<group>"; };
+		74EDC700182B8FDB0041E2E2 /* UserDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDao.h; sourceTree = "<group>"; };
+		74EDC701182B8FDB0041E2E2 /* UserDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDao.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -534,14 +534,14 @@
 		7422E2D6182A1B4100CD64C7 /* DAO */ = {
 			isa = PBXGroup;
 			children = (
-				7422E2D7182A1B4100CD64C7 /* LoginDao.h */,
-				7422E2D8182A1B4100CD64C7 /* LoginDao.m */,
 				7422E2D9182A1B4100CD64C7 /* NewsDao.h */,
 				7422E2DA182A1B4100CD64C7 /* NewsDao.m */,
 				7422E2DB182A1B4100CD64C7 /* SchoolMsgDao.h */,
 				7422E2DC182A1B4100CD64C7 /* SchoolMsgDao.m */,
 				7422E2DD182A1B4100CD64C7 /* ZdezMsgDao.h */,
 				7422E2DE182A1B4100CD64C7 /* ZdezMsgDao.m */,
+				74EDC700182B8FDB0041E2E2 /* UserDao.h */,
+				74EDC701182B8FDB0041E2E2 /* UserDao.m */,
 			);
 			path = DAO;
 			sourceTree = "<group>";
@@ -695,7 +695,6 @@
 				7422E2BF182A1ACB00CD64C7 /* ASICloudFilesObjectRequest.m in Sources */,
 				7422E223182A12AA00CD64C7 /* AppDelegate.m in Sources */,
 				7422E2B2182A1ACB00CD64C7 /* ASIDataCompressor.m in Sources */,
-				7422E2DF182A1B4100CD64C7 /* LoginDao.m in Sources */,
 				7422E24F182A16E000CD64C7 /* SchoolMsgService.m in Sources */,
 				7422E2BE182A1ACB00CD64C7 /* ASICloudFilesObject.m in Sources */,
 				7422E2CC182A1ACB00CD64C7 /* MJRefreshBaseView.m in Sources */,
@@ -707,6 +706,7 @@
 				7422E2B7182A1ACB00CD64C7 /* ASIInputStream.m in Sources */,
 				7422E2C5182A1ACB00CD64C7 /* ASIS3Request.m in Sources */,
 				7422E2FC182A1BD000CD64C7 /* LoginViewController.m in Sources */,
+				74EDC702182B8FDB0041E2E2 /* UserDao.m in Sources */,
 				7422E2B6182A1ACB00CD64C7 /* ASIHTTPRequest.m in Sources */,
 				7422E250182A16E000CD64C7 /* ZdezMsgService.m in Sources */,
 				7422E2C2182A1ACB00CD64C7 /* ASIS3BucketObject.m in Sources */,

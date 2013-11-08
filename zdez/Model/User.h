@@ -17,6 +17,6 @@
 @property (nonatomic, retain) NSString *grade;
 @property (nonatomic, retain) NSString *major;
 @property (nonatomic, retain) NSString *department;
-@property (nonatomic, retain) NSString *school;
+@property (nonatomic, retain) NSString *deviceId;
 
 @end

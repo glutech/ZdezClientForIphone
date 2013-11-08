@@ -40,15 +40,26 @@
 
 - (IBAction)login:(id)sender {
     
-//    if ([username.text isEqualToString:@"jokinryou"] && [password.text isEqualToString:@"123"]) {
-//        [self performSegueWithIdentifier:@"login" sender:self];
+     //验证登录界面的输入，已可用
+//    if (username.text.length == 0 || password.text.length == 0) {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"用户名或密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+//        [alert show];
+//        return;
+//    } else {
+//        LoginService *lservice = [[LoginService alloc]init];
+//        NSString *usrname = username.text;
+//        NSString *pwd = password.text;
+//        if ([lservice login:usrname secondParameter:pwd] == 0) {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"用户名或密码错误" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+//            [alert show];
+//            return;
+//        } else {
+//            // 用户名和密码均正确
+//            [self performSegueWithIdentifier:@"login" sender:self];
+//        }
 //    }
-    LoginService *lservice = [[LoginService alloc]init];
-    NSString *usrname = username.text;
-    NSString *pwd = password.text;
-    [lservice login:usrname secondParameter:pwd];
-    
     [self performSegueWithIdentifier:@"login" sender:self];
+    
     
 }
 @end

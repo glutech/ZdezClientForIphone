@@ -10,6 +10,7 @@
 #import "SchoolMsg.h"
 #import "ZdezMsg.h"
 #import "News.h"
+#import "User.h"
 
 @implementation ParseJson
 
@@ -29,6 +30,7 @@
     NSDate *destDate = [[NSDate alloc] init];
     
     for (NSDictionary *dic in schoolMsgDic) {
+        NSLog(@"schoolMsg: %@", dic);
         sMsg = [[SchoolMsg alloc] init];
         sMsg.schoolMsgId = [[dic objectForKey:@"schoolMsgId"] integerValue];
         sMsg.title = [dic objectForKey:@"title"];
@@ -56,6 +58,27 @@
     
     NSMutableArray *array = [[NSMutableArray alloc] init];
     return array;
+}
+
+- (User *)parseLoginChekMsg:(NSData *)result
+{
+    NSError *error;
+    
+    NSDictionary *userInfoDic = [NSJSONSerialization JSONObjectWithData:result options:NSJSONReadingAllowFragments error:&error];
+    NSLog(@"userInfo: %@", userInfoDic);
+    
+    User *user = [[User alloc] init];
+    user.userId = [[userInfoDic objectForKey:@"id"] integerValue];
+    user.username = [userInfoDic objectForKey:@"username"];
+    user.name = [userInfoDic objectForKey:@"name"];
+    user.gender = [userInfoDic objectForKey:@"gender"];
+    user.grade = [userInfoDic objectForKey:@"grade"];
+    user.major = [userInfoDic objectForKey:@"major"];
+    user.department = [userInfoDic objectForKey:@"department"];
+//    user.school = [userInfoDic objectForKey:@"school"];
+    user.deviceId = [userInfoDic objectForKey:@"staus"];
+    
+    return user;
 }
 
 @end

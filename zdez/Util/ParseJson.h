@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "User.h"
 
 @interface ParseJson : NSObject
 
@@ -15,5 +16,7 @@
 - (NSMutableArray *)parseSchoolMsg:(NSData *)schoolMsgList;
 
 - (NSMutableArray *)parseZdezMsg:(NSData *)zdezMsgList;
+
+- (User *)parseLoginChekMsg:(NSData *)result;
 
 @end
