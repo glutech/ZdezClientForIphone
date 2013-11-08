@@ -14,7 +14,7 @@
 
 - (NSMutableArray *)getZdezMsg
 {
-    NSURL *url = [NSURL URLWithString:@"http://www.zdez.com.cn:9080/zdezServer/AndroidClient_GetUpdateZdezMsg?user_id=4"];
+    NSURL *url = [NSURL URLWithString:@"http://192.168.1.110:8080/zdezServer/AndroidClient_GetUpdateZdezMsg?user_id=4"];
     
     // 构造ASIHTTPRequest对象
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
@@ -31,7 +31,7 @@
     if (error == nil) {
         
         ParseJson *parser = [[ParseJson alloc] init];
-        array = [parser parseSchoolMsg:[request responseData]];
+        array = [parser parseZdezMsg:[request responseData]];
         
         int count = [array count];
         for (int i = count-1; i >= 0; i--) {

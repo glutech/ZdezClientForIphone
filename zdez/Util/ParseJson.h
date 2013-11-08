@@ -17,6 +17,6 @@
 
 - (NSMutableArray *)parseZdezMsg:(NSData *)zdezMsgList;
 
-- (User *)parseLoginChekMsg:(NSData *)result;
+- (User *)parseLoginCheckMsg:(NSData *)result;
 
 @end

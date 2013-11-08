@@ -21,7 +21,7 @@ extern NSString* deviceid;
 {
     int result = 0;
     
-    NSString *postURL = [NSString stringWithFormat:@"http://localhost:8080/zdezServer/IosClient_StudentLoginCheck"];
+    NSString *postURL = [NSString stringWithFormat:@"http://192.168.1.110:8080/zdezServer/IosClient_StudentLoginCheck"];
     
     ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:postURL]];
     
@@ -38,7 +38,7 @@ extern NSString* deviceid;
         if ([NSJSONSerialization isValidJSONObject:[NSJSONSerialization JSONObjectWithData:[request responseData] options:NSJSONReadingAllowFragments error:&error]]) {
             // 返回的数据是合法的json格式数据时，将返回的数据写入本地数据库
             ParseJson *pj = [[ParseJson alloc] init];
-            User *user = [pj parseLoginChekMsg:[request responseData]];
+            User *user = [pj parseLoginCheckMsg:[request responseData]];
             UserDao *dao = [[UserDao alloc] init];
             [dao saveUserInfo:user];
             result = 1;
@@ -46,6 +46,9 @@ extern NSString* deviceid;
             // 返回为fail时
             result = 0;
         }
+    } else {
+        // 网络连接不可用时
+        result = 2;
     }
     
     /*[request responseData]；后半部分留给徐*/
@@ -53,6 +56,14 @@ extern NSString* deviceid;
     NSLog(@"My token is: %@", deviceid);
     
     return result;
+}
+
+- (BOOL)isLogined
+{
+    BOOL flag = false;
+    UserDao *uDao = [[UserDao alloc] init];
+    flag = [uDao isLogined];
+    return flag;
 }
 
 @end

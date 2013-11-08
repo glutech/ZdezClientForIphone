@@ -27,8 +27,8 @@
 {
     [super viewDidLoad];
     
-    self.topViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];//MsgListView
-//    self.topViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MsgListView"];//MsgListView
+//    self.topViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];//MsgListView
+    self.topViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MsgListView"];//MsgListView
 }
 
 - (void)didReceiveMemoryWarning

@@ -28,5 +28,8 @@
 // 查询所有user方法
 - (NSMutableArray *)getUserInfo;
 
+// 检测是否已经有用户登录
+- (BOOL)isLogined;
+
 
 @end

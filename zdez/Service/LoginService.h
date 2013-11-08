@@ -12,4 +12,6 @@
 
 -(int)login:(NSString*)username secondParameter:(NSString*)password;
 
+- (BOOL)isLogined;
+
 @end

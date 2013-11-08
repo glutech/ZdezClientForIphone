@@ -41,25 +41,35 @@
 - (IBAction)login:(id)sender {
     
      //验证登录界面的输入，已可用
-//    if (username.text.length == 0 || password.text.length == 0) {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"用户名或密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-//        [alert show];
-//        return;
-//    } else {
-//        LoginService *lservice = [[LoginService alloc]init];
-//        NSString *usrname = username.text;
-//        NSString *pwd = password.text;
-//        if ([lservice login:usrname secondParameter:pwd] == 0) {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"用户名或密码错误" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-//            [alert show];
-//            return;
-//        } else {
-//            // 用户名和密码均正确
-//            [self performSegueWithIdentifier:@"login" sender:self];
-//        }
-//    }
-    [self performSegueWithIdentifier:@"login" sender:self];
+    if (username.text.length == 0 || password.text.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"用户名或密码不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
+        return;
+    } else {
+        LoginService *lservice = [[LoginService alloc]init];
+        NSString *usrname = username.text;
+        NSString *pwd = password.text;
+        [lservice isLogined];
+        int result = [lservice login:usrname secondParameter:pwd];
+        if (result == 0) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"用户名或密码错误" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [alert show];
+            return;
+        } else if (result == 1){
+            // 用户名和密码均正确
+            [self performSegueWithIdentifier:@"login" sender:self];
+        } else if (result == 2) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"无法连接服务器" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [alert show];
+            return;
+        }
+    }
+//    [self performSegueWithIdentifier:@"login" sender:self];
     
     
+}
+
+- (IBAction)editDone:(id)sender {
+    [sender resignFirstResponder];
 }
 @end

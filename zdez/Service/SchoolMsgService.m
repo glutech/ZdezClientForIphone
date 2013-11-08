@@ -14,7 +14,7 @@
 
 - (NSMutableArray *)getSchoolMsg
 {
-    NSURL *url = [NSURL URLWithString:@"http://www.zdez.com.cn:9080/zdezServer/AndroidClient_GetUpdateSchoolMsg?user_id=4"];
+    NSURL *url = [NSURL URLWithString:@"http://192.168.1.110:8080/zdezServer/AndroidClient_GetUpdateSchoolMsg?user_id=4"];
     
     // 构造ASIHTTPRequest对象
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];

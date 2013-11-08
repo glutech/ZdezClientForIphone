@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "LoginService.h"
 
 @implementation AppDelegate
 
@@ -26,6 +27,22 @@ NSString *deviceid;
         NSString *pushInfoStr = [NSString stringWithFormat:@"%@",[pushInfo objectForKey:@"aps"]];
         NSLog(@"userInfo: %@", pushInfoStr);
     }
+    
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    // 判断是否已登录过，如果已登录过，则直接进入程序主界面，否则进入登录页面
+    LoginService *ls = [[LoginService alloc] init];
+    if (ls.isLogined) {
+        NSLog(@"logined....");
+        self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"initialView"];
+    } else {
+        self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginView"];
+    }
+    
+    [self.window makeKeyAndVisible];
     
     return YES;
 }

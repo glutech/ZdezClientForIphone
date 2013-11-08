@@ -26,7 +26,7 @@
 
 @interface MsgListViewController () <UITableViewDataSource, UITableViewDelegate, MenuViewControllerDelegate, MJRefreshBaseViewDelegate> {
     
-    MJRefreshFooterView *_footer;
+//    MJRefreshFooterView *_footer;
     MJRefreshHeaderView *_header;
     
     NSMutableArray *_newsList;
@@ -67,9 +67,9 @@
     _header.scrollView = self.tableView;
     
     // 上拉加载更多
-    _footer = [[MJRefreshFooterView alloc] init];
-    _footer.delegate = self;
-    _footer.scrollView = self.tableView;
+//    _footer = [[MJRefreshFooterView alloc] init];
+//    _footer.delegate = self;
+//    _footer.scrollView = self.tableView;
     
     // 假数据
     _newsList = [NSMutableArray array];
@@ -86,12 +86,13 @@
     titleLabel.font = [UIFont boldSystemFontOfSize:20];  //设置文本字体与大小
     titleLabel.textColor = [UIColor colorWithRed:(0.0/255.0) green:(255.0 / 255.0) blue:(0.0 / 255.0) alpha:1];  //设置文本颜色
     titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.text = @"新闻咨询";  //设置标题
+//    titleLabel.text = @"新闻咨询";  //设置标题
     self.navigationItem.titleView = self.titleLabel;
     
     if (self.selectedCategory == 0) {
-        _newsList = [NSMutableArray arrayWithObjects:
-                     @"One",@"Two",@"Three",nil];/*[newsDao findAll];*/
+        _newsList = [newsDao findAll];
+//        _newsList = [NSMutableArray arrayWithObjects:
+//                     @"One",@"Two",@"Three",nil];/*[newsDao findAll];*/
         titleLabel.text = @"新闻咨询";  //设置标题
         self.navigationItem.titleView = self.titleLabel;
     } else if (self.selectedCategory == 1) {
@@ -129,8 +130,9 @@
     ZdezMsgDao *zdezMsgDao = [[ZdezMsgDao alloc] init];
     
     if (self.selectedCategory == 0) {
-        _newsList = [NSMutableArray arrayWithObjects:
-                     @"One",@"Two",@"Three",nil];/*[newsDao findAll];*/
+//        _newsList = [NSMutableArray arrayWithObjects:
+//                     @"One",@"Two",@"Three",nil];/*[newsDao findAll];*/
+        _newsList = [newsDao findAll];
     } else if (self.selectedCategory == 1) {
         _schoolMsgList = [schoolMsgDao findAll];
     } else if (self.selectedCategory == 2) {
@@ -167,7 +169,7 @@
 {
     // 让刷新控件恢复默认的状态
     [_header endRefreshing];
-    [_footer endRefreshing];
+//    [_footer endRefreshing];
     
     int count = 0;
     
@@ -198,31 +200,31 @@
     News *nMsg = [[News alloc] init];
     
     //手工设置nMsg对象值，此处应更改为根据网络获取值设定
-    nMsg.newsId = 1;
-    nMsg.title = @"fuck you";
-    nMsg.date = [NSDate date];
+//    nMsg.newsId = 1;
+//    nMsg.title = @"fuck you";
+//    nMsg.date = [NSDate date];
     
     NSDateFormatter *dFormatter = [[NSDateFormatter alloc] init];
     [dFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     
     if (self.selectedCategory == 0) {
-        /*//nMsg = _newsList[indexPath.row];
-        [nMsg setTitle:_newsList[indexPath.row]];
+        nMsg = _newsList[indexPath.row];
+//        [nMsg setTitle:_newsList[indexPath.row]];
         
         cell.titleLabel.text = nMsg.title;
         NSString *detaStr = [dFormatter stringFromDate:nMsg.date];
-        cell.dateLabel.text = detaStr;*/
+        cell.dateLabel.text = detaStr;
         
         /*Added by Glu
          初始化消息列表中的标题、时间、图片
          */
-        UILabel *titleLabel = (UILabel *)[cell viewWithTag:100];
-        titleLabel.text = nMsg.title;
-        UILabel *timeLabel = (UILabel *)[cell viewWithTag:101];
-        timeLabel.text = [dFormatter stringFromDate:[NSDate date]];
-        UIImageView * ratingImageView = (UIImageView *)
-        [cell viewWithTag:102];
-        ratingImageView.image = [self imageForMessage:nMsg.newsId];
+//        UILabel *titleLabel = (UILabel *)[cell viewWithTag:100];
+//        titleLabel.text = nMsg.title;
+//        UILabel *timeLabel = (UILabel *)[cell viewWithTag:101];
+//        timeLabel.text = [dFormatter stringFromDate:[NSDate date]];
+//        UIImageView * ratingImageView = (UIImageView *)
+//        [cell viewWithTag:102];
+//        ratingImageView.image = [self imageForMessage:nMsg.newsId];
         
     } else if (self.selectedCategory == 1) {
         sMsg = _schoolMsgList[indexPath.row];
@@ -294,7 +296,7 @@
 
 - (void)dealloc
 {
-    [_footer free];
+//    [_footer free];
     [_header free];
 }
 
