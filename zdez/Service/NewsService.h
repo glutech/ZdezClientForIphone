@@ -11,5 +11,6 @@
 @interface NewsService : NSObject
 
 - (NSMutableArray *)getNews;
+- (NSString *)getContent:(int)newsId;
 
 @end

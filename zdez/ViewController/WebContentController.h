@@ -8,8 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+@class WebContentController;
+
+@protocol WebContentControllerDelegate <NSObject>
+
+- (void)webContentControllerDidDone:(WebContentController *)controller;
+
+@end
+
 @interface WebContentController : UIViewController
 {
     UIWebView *webView;
 }
+
+@property (nonatomic, weak) id <WebContentControllerDelegate> delegate;
+
+- (IBAction)didDone:(id)sender;
+
 @end

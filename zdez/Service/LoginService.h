@@ -14,4 +14,6 @@
 
 - (BOOL)isLogined;
 
+- (void)logOut;
+
 @end

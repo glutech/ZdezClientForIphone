@@ -28,4 +28,6 @@
 // 查询所有zdezMsg方法
 - (NSMutableArray *)findAll;
 
+- (NSString *)getContent:(int)msgId;
+
 @end

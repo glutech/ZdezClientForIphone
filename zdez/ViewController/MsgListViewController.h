@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WebContentController.h"
+#import "SettingsViewController.h"
 
-@interface MsgListViewController : UIViewController
+@interface MsgListViewController : UIViewController <WebContentControllerDelegate, SettingsViewControllerDelegate>
 
 @property (strong, nonatomic) UILabel *titleLabel;
 

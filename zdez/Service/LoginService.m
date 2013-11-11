@@ -66,4 +66,10 @@ extern NSString* deviceid;
     return flag;
 }
 
+- (void)logOut
+{
+    UserDao *dao = [[UserDao alloc] init];
+    [dao logOut];
+}
+
 @end

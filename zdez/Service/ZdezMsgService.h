@@ -11,5 +11,6 @@
 @interface ZdezMsgService : NSObject
 
 - (NSMutableArray *)getZdezMsg;
+- (NSString *)getContent:(int)msgId;
 
 @end

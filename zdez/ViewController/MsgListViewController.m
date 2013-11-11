@@ -21,6 +21,8 @@
 #import "ZdezMsg.h"
 #import "ZdezMsgDao.h"
 #import "ZdezMsgService.h"
+#import "WebContentController.h"
+#import "SettingsViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -32,6 +34,9 @@
     NSMutableArray *_newsList;
     NSMutableArray *_schoolMsgList;
     NSMutableArray *_zdezMsgList;
+    NSIndexPath *_selectRow;
+    NSString *_htmlContent;
+    int *_msgId;
 }
 
 @property (nonatomic, weak) IBOutlet UINavigationItem *navigationTitle;
@@ -58,8 +63,8 @@
 {
     [super viewDidLoad];
     
-    //默认首先进入新闻咨询
-    self.selectedCategory = 0;
+    //默认首先进入校园通知
+    self.selectedCategory = 1;
     
     // 下拉刷新
     _header = [[MJRefreshHeaderView alloc] init];
@@ -81,32 +86,24 @@
     ZdezMsgDao *zdezMsgDao = [[ZdezMsgDao alloc] init];
     
     //设置导航条标题
-    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-    titleLabel.backgroundColor = [UIColor clearColor];  //设置Label背景透明
-    titleLabel.font = [UIFont boldSystemFontOfSize:20];  //设置文本字体与大小
-    titleLabel.textColor = [UIColor colorWithRed:(0.0/255.0) green:(255.0 / 255.0) blue:(0.0 / 255.0) alpha:1];  //设置文本颜色
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-//    titleLabel.text = @"新闻咨询";  //设置标题
-    self.navigationItem.titleView = self.titleLabel;
+//    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
+//    titleLabel.backgroundColor = [UIColor clearColor];  //设置Label背景透明
+//    titleLabel.font = [UIFont boldSystemFontOfSize:20];  //设置文本字体与大小
+//    titleLabel.textColor = [UIColor colorWithRed:(0.0/255.0) green:(255.0 / 255.0) blue:(0.0 / 255.0) alpha:1];  //设置文本颜色
+//    titleLabel.textAlignment = NSTextAlignmentCenter;
+////    titleLabel.text = @"新闻咨询";  //设置标题
+//    self.navigationItem.titleView = self.titleLabel;
     
     if (self.selectedCategory == 0) {
         _newsList = [newsDao findAll];
-//        _newsList = [NSMutableArray arrayWithObjects:
-//                     @"One",@"Two",@"Three",nil];/*[newsDao findAll];*/
-        titleLabel.text = @"新闻咨询";  //设置标题
-        self.navigationItem.titleView = self.titleLabel;
     } else if (self.selectedCategory == 1) {
         _schoolMsgList = [schoolMsgDao findAll];
-        titleLabel.text = @"学校通知";  //设置标题
-        self.navigationItem.titleView = self.titleLabel;
     } else if (self.selectedCategory == 2) {
         _zdezMsgList = [zdezMsgDao findAll];
-        titleLabel.text = @"找得着";  //设置标题
-        self.navigationItem.titleView = self.titleLabel;
     }
     
     // 定义侧滑菜单选项
-    self.msgCategories = @[@"新闻资讯", @"校园通知", @"找得着", @"设置"];
+    self.msgCategories = @[@"新闻资讯", @"校园通知", @"找得着"];
     self.navigationTitle.title = self.msgCategories[self.selectedCategory];
     
 }
@@ -130,17 +127,19 @@
     ZdezMsgDao *zdezMsgDao = [[ZdezMsgDao alloc] init];
     
     if (self.selectedCategory == 0) {
-//        _newsList = [NSMutableArray arrayWithObjects:
-//                     @"One",@"Two",@"Three",nil];/*[newsDao findAll];*/
         _newsList = [newsDao findAll];
+        [self.tableView reloadData];
+        [self.slidingViewController resetTopView];
     } else if (self.selectedCategory == 1) {
         _schoolMsgList = [schoolMsgDao findAll];
+        [self.tableView reloadData];
+        [self.slidingViewController resetTopView];
     } else if (self.selectedCategory == 2) {
         _zdezMsgList = [zdezMsgDao findAll];
+        [self.tableView reloadData];
+        [self.slidingViewController resetTopView];
     }
     
-    [self.tableView reloadData];
-    [self.slidingViewController resetTopView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -199,32 +198,15 @@
     ZdezMsg *zMsg = [[ZdezMsg alloc] init];
     News *nMsg = [[News alloc] init];
     
-    //手工设置nMsg对象值，此处应更改为根据网络获取值设定
-//    nMsg.newsId = 1;
-//    nMsg.title = @"fuck you";
-//    nMsg.date = [NSDate date];
-    
     NSDateFormatter *dFormatter = [[NSDateFormatter alloc] init];
     [dFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     
     if (self.selectedCategory == 0) {
         nMsg = _newsList[indexPath.row];
-//        [nMsg setTitle:_newsList[indexPath.row]];
         
         cell.titleLabel.text = nMsg.title;
         NSString *detaStr = [dFormatter stringFromDate:nMsg.date];
         cell.dateLabel.text = detaStr;
-        
-        /*Added by Glu
-         初始化消息列表中的标题、时间、图片
-         */
-//        UILabel *titleLabel = (UILabel *)[cell viewWithTag:100];
-//        titleLabel.text = nMsg.title;
-//        UILabel *timeLabel = (UILabel *)[cell viewWithTag:101];
-//        timeLabel.text = [dFormatter stringFromDate:[NSDate date]];
-//        UIImageView * ratingImageView = (UIImageView *)
-//        [cell viewWithTag:102];
-//        ratingImageView.image = [self imageForMessage:nMsg.newsId];
         
     } else if (self.selectedCategory == 1) {
         sMsg = _schoolMsgList[indexPath.row];
@@ -248,6 +230,23 @@
 //列表项选中的事件处理
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // 用于返回时清除已选项
+    _selectRow = indexPath;
+    
+    if (self.selectedCategory == 0) {
+        News *n = _newsList[indexPath.row];
+        NewsService *newsService = [[NewsService alloc] init];
+        _htmlContent = [newsService getContent:n.newsId];
+    } else if (self.selectedCategory == 1) {
+        SchoolMsg *sMsg = _schoolMsgList[indexPath.row];
+        SchoolMsgService *sMsgService = [[SchoolMsgService alloc] init];
+        _htmlContent = [sMsgService getContent:sMsg.schoolMsgId];
+    } else if (self.selectedCategory == 2) {
+        ZdezMsg *zMsg = _zdezMsgList[indexPath.row];
+        ZdezMsgService *zMsgService = [[ZdezMsgService alloc] init];
+        _htmlContent = [zMsgService getContent:zMsg.zdezMsgId];
+    }
+    
     [self performSegueWithIdentifier:@"toWebContent" sender:self];
 }
 
@@ -289,8 +288,14 @@
 {
     if([segue.identifier isEqualToString:@"toWebContent"]) //"toWebContent"是SEGUE连线的标识
     {
-        id theSegue = segue.destinationViewController;
-        [theSegue setValue:@"http://www.baidu.com" forKey:@"address"];
+        UINavigationController *navigationController = segue.destinationViewController;
+        WebContentController *webContentController = [[navigationController viewControllers] objectAtIndex:0];
+        webContentController.delegate = self;
+        [webContentController setValue:_htmlContent forKey:@"content"];
+    } else if ([segue.identifier isEqualToString:@"toSettings"]) {
+        UINavigationController *navigationController = segue.destinationViewController;
+        SettingsViewController *settingsViewController = [[navigationController viewControllers] objectAtIndex:0];
+        settingsViewController.delegate = self;
     }
 }
 
@@ -304,6 +309,21 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - WebContentControllerDelegate
+
+- (void)webContentControllerDidDone:(WebContentController *)controller
+{
+    [self.tableView deselectRowAtIndexPath:_selectRow animated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - SettingsViewControllerDelegate
+
+- (void)settingsViewControllerDidDone:(SettingsViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -28,4 +28,6 @@
 // 查询所有schoolMsg方法
 - (NSMutableArray *)findAll;
 
+- (NSString *)getContent:(int)msgId;
+
 @end

@@ -10,13 +10,14 @@
 
 @interface WebContentController ()
 
-@property(nonatomic,weak)NSString *address;
+@property(nonatomic,weak)NSString *content;
 
 @end
 
 @implementation WebContentController
 
-@synthesize address;
+@synthesize content;
+@synthesize delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,10 +32,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 50, 320, 480)];
-    NSURLRequest *request =[NSURLRequest requestWithURL:[NSURL URLWithString:address]];
-    [self.view addSubview: webView];
-    [webView loadRequest:request];
+    webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 60, 320, 432)];
+    
+    // 加载html代码
+    [webView loadHTMLString:content baseURL:nil];
+    [self.view addSubview:webView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,4 +45,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)didDone:(id)sender {
+    [self.delegate webContentControllerDidDone:self];
+}
 @end

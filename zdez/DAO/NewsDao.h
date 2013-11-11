@@ -28,4 +28,6 @@
 // 查询所有news方法
 - (NSMutableArray *)findAll;
 
+- (NSString *)getContent:(int)newsId;
+
 @end

@@ -31,5 +31,11 @@
 // 检测是否已经有用户登录
 - (BOOL)isLogined;
 
+// 获取登录用户的id，用户抓取信息
+- (int)getUserId;
+
+// 用户登出，删除数据库中的相关信息
+- (void)logOut;
+
 
 @end

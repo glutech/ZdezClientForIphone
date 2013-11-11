@@ -9,17 +9,26 @@
 #import "ZdezMsgService.h"
 #import "ASIHTTPRequest.h"
 #import "ParseJson.h"
+#import "UserDao.h"
+#import "ZdezMsgDao.h"
 
 @implementation ZdezMsgService
 
 - (NSMutableArray *)getZdezMsg
 {
-    NSURL *url = [NSURL URLWithString:@"http://192.168.1.110:8080/zdezServer/AndroidClient_GetUpdateZdezMsg?user_id=4"];
+    
+    UserDao *userDao = [[UserDao alloc] init];
+    int userId = [userDao getUserId];
+    NSString *idStr = [NSString stringWithFormat:@"%d", userId];
+    NSString *address = @"http://192.168.1.110:8080/zdezServer/AndroidClient_GetUpdateZdezMsg?user_id=";
+    address = [address stringByAppendingString:idStr];
+    
+    NSURL *url = [NSURL URLWithString:address];
     
     // 构造ASIHTTPRequest对象
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request setRequestMethod:@"GET"];
-    [request setTimeOutSeconds:10];
+    [request setTimeOutSeconds:5];
     [request startSynchronous];
     
     //    NSString *response = [[NSString alloc] init];
@@ -40,9 +49,19 @@
         
     } else {
         NSLog(@"can't get data... error: %@", error);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接超时，请稍后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
     }
     
     return arrayDesc;
+}
+
+- (NSString *)getContent:(int)msgId
+{
+    NSString *htmlContent = [[NSString alloc] init];
+    ZdezMsgDao *dao = [[ZdezMsgDao alloc] init];
+    htmlContent = [dao getContent:msgId];
+    return htmlContent;
 }
 
 @end

@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		37627F8F182A3C3E009B2F87 /* LoginService.m in Sources */ = {isa = PBXBuildFile; fileRef = 37627F8E182A3C3E009B2F87 /* LoginService.m */; };
 		7406397B182CD6D500CFF080 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7406397A182CD6D500CFF080 /* Icon.png */; };
-		7406397F182CD97700CFF080 /* ToWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7406397E182CD97700CFF080 /* ToWebView.m */; };
-		74063985182CE8F900CFF080 /* Pull-to-RefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74063984182CE8F900CFF080 /* Pull-to-RefreshViewController.m */; };
 		7422E213182A12AA00CD64C7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7422E212182A12AA00CD64C7 /* Foundation.framework */; };
 		7422E215182A12AA00CD64C7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7422E214182A12AA00CD64C7 /* CoreGraphics.framework */; };
 		7422E217182A12AA00CD64C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7422E216182A12AA00CD64C7 /* UIKit.framework */; };
@@ -83,6 +81,7 @@
 		7422E2FF182A1BD000CD64C7 /* WebContentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7422E2FA182A1BD000CD64C7 /* WebContentController.m */; };
 		7422E301182A493B00CD64C7 /* aps_development.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7422E300182A493B00CD64C7 /* aps_development.cer */; };
 		74EDC702182B8FDB0041E2E2 /* UserDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 74EDC701182B8FDB0041E2E2 /* UserDao.m */; };
+		74F1D44E1830C33C00425C89 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F1D44D1830C33C00425C89 /* SettingsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,10 +98,6 @@
 		37627F8D182A3C3E009B2F87 /* LoginService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginService.h; sourceTree = "<group>"; };
 		37627F8E182A3C3E009B2F87 /* LoginService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginService.m; sourceTree = "<group>"; };
 		7406397A182CD6D500CFF080 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
-		7406397D182CD97700CFF080 /* ToWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToWebView.h; sourceTree = "<group>"; };
-		7406397E182CD97700CFF080 /* ToWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToWebView.m; sourceTree = "<group>"; };
-		74063983182CE8F900CFF080 /* Pull-to-RefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Pull-to-RefreshViewController.h"; sourceTree = "<group>"; };
-		74063984182CE8F900CFF080 /* Pull-to-RefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Pull-to-RefreshViewController.m"; sourceTree = "<group>"; };
 		7422E20F182A12AA00CD64C7 /* zdez.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zdez.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7422E212182A12AA00CD64C7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7422E214182A12AA00CD64C7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -231,6 +226,8 @@
 		7422E300182A493B00CD64C7 /* aps_development.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = aps_development.cer; sourceTree = "<group>"; };
 		74EDC700182B8FDB0041E2E2 /* UserDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDao.h; sourceTree = "<group>"; };
 		74EDC701182B8FDB0041E2E2 /* UserDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDao.m; sourceTree = "<group>"; };
+		74F1D44C1830C33C00425C89 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		74F1D44D1830C33C00425C89 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,15 +263,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7406397C182CD94F00CFF080 /* Segue */ = {
-			isa = PBXGroup;
-			children = (
-				7406397D182CD97700CFF080 /* ToWebView.h */,
-				7406397E182CD97700CFF080 /* ToWebView.m */,
-			);
-			path = Segue;
-			sourceTree = "<group>";
-		};
 		7422E206182A12AA00CD64C7 = {
 			isa = PBXGroup;
 			children = (
@@ -317,7 +305,6 @@
 		7422E218182A12AA00CD64C7 /* zdez */ = {
 			isa = PBXGroup;
 			children = (
-				7406397C182CD94F00CFF080 /* Segue */,
 				7422E2F0182A1BD000CD64C7 /* ViewController */,
 				7422E2E3182A1B8700CD64C7 /* Model */,
 				7422E2D6182A1B4100CD64C7 /* DAO */,
@@ -583,8 +570,6 @@
 		7422E2F0182A1BD000CD64C7 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				74063983182CE8F900CFF080 /* Pull-to-RefreshViewController.h */,
-				74063984182CE8F900CFF080 /* Pull-to-RefreshViewController.m */,
 				7422E2F1182A1BD000CD64C7 /* InitialSlidingViewController.h */,
 				7422E2F2182A1BD000CD64C7 /* InitialSlidingViewController.m */,
 				7422E2F3182A1BD000CD64C7 /* LoginViewController.h */,
@@ -595,6 +580,8 @@
 				7422E2F8182A1BD000CD64C7 /* MsgListViewController.m */,
 				7422E2F9182A1BD000CD64C7 /* WebContentController.h */,
 				7422E2FA182A1BD000CD64C7 /* WebContentController.m */,
+				74F1D44C1830C33C00425C89 /* SettingsViewController.h */,
+				74F1D44D1830C33C00425C89 /* SettingsViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -710,7 +697,6 @@
 				7422E2C1182A1ACB00CD64C7 /* ASIS3Bucket.m in Sources */,
 				7422E2B1182A1ACB00CD64C7 /* ASIAuthenticationDialog.m in Sources */,
 				7422E2EC182A1B8700CD64C7 /* News.m in Sources */,
-				74063985182CE8F900CFF080 /* Pull-to-RefreshViewController.m in Sources */,
 				7422E2C6182A1ACB00CD64C7 /* ASIS3ServiceRequest.m in Sources */,
 				7422E2EF182A1B8700CD64C7 /* ZdezMsg.m in Sources */,
 				7422E2EE182A1B8700CD64C7 /* User.m in Sources */,
@@ -725,7 +711,6 @@
 				7422E24E182A16E000CD64C7 /* NewsService.m in Sources */,
 				7422E2BC182A1ACB00CD64C7 /* ASICloudFilesContainerRequest.m in Sources */,
 				7422E2C4182A1ACB00CD64C7 /* ASIS3ObjectRequest.m in Sources */,
-				7406397F182CD97700CFF080 /* ToWebView.m in Sources */,
 				37627F8F182A3C3E009B2F87 /* LoginService.m in Sources */,
 				7422E2B7182A1ACB00CD64C7 /* ASIInputStream.m in Sources */,
 				7422E2C5182A1ACB00CD64C7 /* ASIS3Request.m in Sources */,
@@ -753,6 +738,7 @@
 				7422E21F182A12AA00CD64C7 /* main.m in Sources */,
 				7422E2B3182A1ACB00CD64C7 /* ASIDataDecompressor.m in Sources */,
 				7422E2B8182A1ACB00CD64C7 /* ASINetworkQueue.m in Sources */,
+				74F1D44E1830C33C00425C89 /* SettingsViewController.m in Sources */,
 				7422E2B9182A1ACB00CD64C7 /* ASIWebPageRequest.m in Sources */,
 				7422E2C3182A1ACB00CD64C7 /* ASIS3BucketRequest.m in Sources */,
 			);

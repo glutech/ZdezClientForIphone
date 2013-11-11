@@ -11,5 +11,6 @@
 @interface SchoolMsgService : NSObject
 
 - (NSMutableArray *)getSchoolMsg;
+- (NSString *)getContent:(int)msgId;
 
 @end
