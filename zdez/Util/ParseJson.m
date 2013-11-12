@@ -30,7 +30,6 @@
     NSDate *destDate = [[NSDate alloc] init];
     
     for (NSDictionary *dic in schoolMsgDic) {
-        NSLog(@"schoolMsg: %@", dic);
         sMsg = [[SchoolMsg alloc] init];
         sMsg.schoolMsgId = [[dic objectForKey:@"schoolMsgId"] integerValue];
         sMsg.title = [dic objectForKey:@"title"];
@@ -115,10 +114,8 @@
     NSError *error;
     
     NSDictionary *userInfoDic = [NSJSONSerialization JSONObjectWithData:result options:NSJSONReadingAllowFragments error:&error];
-    NSLog(@"userInfo: %@", userInfoDic);
     
     User *user = [[User alloc] init];
-        NSLog(@"userInfoDic: %@", userInfoDic);
         user.userId = [[userInfoDic objectForKey:@"id"] integerValue];
         user.username = [userInfoDic objectForKey:@"username"];
         user.name = [userInfoDic objectForKey:@"name"];

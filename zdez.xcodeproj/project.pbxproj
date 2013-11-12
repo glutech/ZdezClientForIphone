@@ -27,7 +27,6 @@
 		7422E250182A16E000CD64C7 /* ZdezMsgService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7422E24D182A16E000CD64C7 /* ZdezMsgService.m */; };
 		7422E254182A178600CD64C7 /* ParseJson.m in Sources */ = {isa = PBXBuildFile; fileRef = 7422E253182A178600CD64C7 /* ParseJson.m */; };
 		7422E256182A17BD00CD64C7 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7422E255182A17BD00CD64C7 /* CFNetwork.framework */; };
-		7422E258182A17D700CD64C7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7422E257182A17D700CD64C7 /* SystemConfiguration.framework */; };
 		7422E25A182A17E500CD64C7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7422E259182A17E500CD64C7 /* MobileCoreServices.framework */; };
 		7422E25C182A17F000CD64C7 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7422E25B182A17F000CD64C7 /* libz.dylib */; };
 		7422E25E182A17FD00CD64C7 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7422E25D182A17FD00CD64C7 /* libxml2.dylib */; };
@@ -82,6 +81,10 @@
 		7422E301182A493B00CD64C7 /* aps_development.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7422E300182A493B00CD64C7 /* aps_development.cer */; };
 		74EDC702182B8FDB0041E2E2 /* UserDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 74EDC701182B8FDB0041E2E2 /* UserDao.m */; };
 		74F1D44E1830C33C00425C89 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F1D44D1830C33C00425C89 /* SettingsViewController.m */; };
+		74F66D5A1831EFBB00DDED48 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74F66D591831EFBB00DDED48 /* SystemConfiguration.framework */; };
+		74F66D611831F2C800DDED48 /* Reachability.h in Sources */ = {isa = PBXBuildFile; fileRef = 7422E2A2182A1ACB00CD64C7 /* Reachability.h */; };
+		74F66D641832060200DDED48 /* PasswordModifyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F66D631832060200DDED48 /* PasswordModifyViewController.m */; };
+		74F66D67183206A400DDED48 /* UserService.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F66D66183206A400DDED48 /* UserService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,7 +127,6 @@
 		7422E252182A178600CD64C7 /* ParseJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParseJson.h; sourceTree = "<group>"; };
 		7422E253182A178600CD64C7 /* ParseJson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParseJson.m; sourceTree = "<group>"; };
 		7422E255182A17BD00CD64C7 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		7422E257182A17D700CD64C7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7422E259182A17E500CD64C7 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		7422E25B182A17F000CD64C7 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		7422E25D182A17FD00CD64C7 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
@@ -228,6 +230,11 @@
 		74EDC701182B8FDB0041E2E2 /* UserDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDao.m; sourceTree = "<group>"; };
 		74F1D44C1830C33C00425C89 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		74F1D44D1830C33C00425C89 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		74F66D591831EFBB00DDED48 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		74F66D621832060200DDED48 /* PasswordModifyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordModifyViewController.h; sourceTree = "<group>"; };
+		74F66D631832060200DDED48 /* PasswordModifyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordModifyViewController.m; sourceTree = "<group>"; };
+		74F66D65183206A400DDED48 /* UserService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserService.h; sourceTree = "<group>"; };
+		74F66D66183206A400DDED48 /* UserService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserService.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +242,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74F66D5A1831EFBB00DDED48 /* SystemConfiguration.framework in Frameworks */,
 				7422E266182A1A7E00CD64C7 /* QuartzCore.framework in Frameworks */,
 				7422E264182A1A7300CD64C7 /* AVFoundation.framework in Frameworks */,
 				7422E262182A182000CD64C7 /* AudioToolbox.framework in Frameworks */,
@@ -242,7 +250,6 @@
 				7422E25E182A17FD00CD64C7 /* libxml2.dylib in Frameworks */,
 				7422E25C182A17F000CD64C7 /* libz.dylib in Frameworks */,
 				7422E25A182A17E500CD64C7 /* MobileCoreServices.framework in Frameworks */,
-				7422E258182A17D700CD64C7 /* SystemConfiguration.framework in Frameworks */,
 				7422E256182A17BD00CD64C7 /* CFNetwork.framework in Frameworks */,
 				7422E215182A12AA00CD64C7 /* CoreGraphics.framework in Frameworks */,
 				7422E217182A12AA00CD64C7 /* UIKit.framework in Frameworks */,
@@ -285,6 +292,7 @@
 		7422E211182A12AA00CD64C7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				74F66D591831EFBB00DDED48 /* SystemConfiguration.framework */,
 				7422E265182A1A7E00CD64C7 /* QuartzCore.framework */,
 				7422E263182A1A7300CD64C7 /* AVFoundation.framework */,
 				7422E261182A182000CD64C7 /* AudioToolbox.framework */,
@@ -292,7 +300,6 @@
 				7422E25D182A17FD00CD64C7 /* libxml2.dylib */,
 				7422E25B182A17F000CD64C7 /* libz.dylib */,
 				7422E259182A17E500CD64C7 /* MobileCoreServices.framework */,
-				7422E257182A17D700CD64C7 /* SystemConfiguration.framework */,
 				7422E255182A17BD00CD64C7 /* CFNetwork.framework */,
 				7422E212182A12AA00CD64C7 /* Foundation.framework */,
 				7422E214182A12AA00CD64C7 /* CoreGraphics.framework */,
@@ -363,6 +370,8 @@
 				7422E24D182A16E000CD64C7 /* ZdezMsgService.m */,
 				37627F8D182A3C3E009B2F87 /* LoginService.h */,
 				37627F8E182A3C3E009B2F87 /* LoginService.m */,
+				74F66D65183206A400DDED48 /* UserService.h */,
+				74F66D66183206A400DDED48 /* UserService.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -582,6 +591,8 @@
 				7422E2FA182A1BD000CD64C7 /* WebContentController.m */,
 				74F1D44C1830C33C00425C89 /* SettingsViewController.h */,
 				74F1D44D1830C33C00425C89 /* SettingsViewController.m */,
+				74F66D621832060200DDED48 /* PasswordModifyViewController.h */,
+				74F66D631832060200DDED48 /* PasswordModifyViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -691,6 +702,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74F66D611831F2C800DDED48 /* Reachability.h in Sources */,
 				7422E2CD182A1ACB00CD64C7 /* MJRefreshFooterView.m in Sources */,
 				7422E2E1182A1B4100CD64C7 /* SchoolMsgDao.m in Sources */,
 				7422E2CE182A1ACB00CD64C7 /* MJRefreshHeaderView.m in Sources */,
@@ -701,6 +713,7 @@
 				7422E2EF182A1B8700CD64C7 /* ZdezMsg.m in Sources */,
 				7422E2EE182A1B8700CD64C7 /* User.m in Sources */,
 				7422E2C8182A1ACB00CD64C7 /* Reachability.m in Sources */,
+				74F66D67183206A400DDED48 /* UserService.m in Sources */,
 				7422E2BF182A1ACB00CD64C7 /* ASICloudFilesObjectRequest.m in Sources */,
 				7422E223182A12AA00CD64C7 /* AppDelegate.m in Sources */,
 				7422E2B2182A1ACB00CD64C7 /* ASIDataCompressor.m in Sources */,
@@ -741,6 +754,7 @@
 				74F1D44E1830C33C00425C89 /* SettingsViewController.m in Sources */,
 				7422E2B9182A1ACB00CD64C7 /* ASIWebPageRequest.m in Sources */,
 				7422E2C3182A1ACB00CD64C7 /* ASIS3BucketRequest.m in Sources */,
+				74F66D641832060200DDED48 /* PasswordModifyViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,7 +21,8 @@ extern NSString* deviceid;
 {
     int result = 0;
     
-    NSString *postURL = [NSString stringWithFormat:@"http://192.168.1.110:8080/zdezServer/IosClient_StudentLoginCheck"];
+    NSString *postURL = [NSString stringWithFormat:@"IosClient_StudentLoginCheck"];
+    postURL = [HOST_NAME stringByAppendingString:postURL];
     
     ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:postURL]];
     
@@ -41,6 +42,14 @@ extern NSString* deviceid;
             User *user = [pj parseLoginCheckMsg:[request responseData]];
             UserDao *dao = [[UserDao alloc] init];
             [dao saveUserInfo:user];
+            
+            // 用户id保存到NSUserDefaults内
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setInteger:user.userId forKey:@"userId"];
+            [userDefaults setObject:user.username forKey:@"username"];
+            // 保存到磁盘上
+            [userDefaults synchronize];
+            
             result = 1;
         } else {
             // 返回为fail时
@@ -66,10 +75,48 @@ extern NSString* deviceid;
     return flag;
 }
 
-- (void)logOut
+- (BOOL)logOut
 {
-    UserDao *dao = [[UserDao alloc] init];
-    [dao logOut];
+    BOOL flag = false;
+    
+    // 给服务器发送信号，告诉服务器不要再给这个帐号发送推送通知了
+    flag = [self noNotificationAnyMore];
+    if (flag) {
+        UserDao *dao = [[UserDao alloc] init];
+        [dao logOut];
+    }
+    
+    return flag;
+}
+
+- (BOOL)noNotificationAnyMore
+{
+    BOOL flag = false;
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [userDefaults stringForKey:@"username"];
+    NSString *staus = @"106289999";
+    
+    NSString *postURL = [NSString stringWithFormat:@"Ios_Client_NoNotificationAnyMore"];
+    postURL = [HOST_NAME stringByAppendingString:postURL];
+    
+    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:postURL]];
+    
+    [request addPostValue:username forKey:@"username"];
+    
+    [request addPostValue:staus forKey:@"staus"];
+    
+    [request startSynchronous];
+    
+    NSError *error = request.error;
+    if (error == nil) {
+        NSString *flagStr = [[NSString alloc] initWithData:[request responseData] encoding:NSASCIIStringEncoding];
+        if ([flagStr isEqualToString:@"true"]){
+            flag = true;
+        }
+    }
+    
+    return flag;
 }
 
 @end

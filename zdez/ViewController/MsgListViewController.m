@@ -94,6 +94,7 @@
 ////    titleLabel.text = @"新闻咨询";  //设置标题
 //    self.navigationItem.titleView = self.titleLabel;
     
+    [self refreshViewBeginRefreshing:_header];
     if (self.selectedCategory == 0) {
         _newsList = [newsDao findAll];
     } else if (self.selectedCategory == 1) {
@@ -126,19 +127,16 @@
     SchoolMsgDao *schoolMsgDao = [[SchoolMsgDao alloc] init];
     ZdezMsgDao *zdezMsgDao = [[ZdezMsgDao alloc] init];
     
+    [self refreshViewBeginRefreshing:_header];
     if (self.selectedCategory == 0) {
         _newsList = [newsDao findAll];
-        [self.tableView reloadData];
-        [self.slidingViewController resetTopView];
     } else if (self.selectedCategory == 1) {
         _schoolMsgList = [schoolMsgDao findAll];
-        [self.tableView reloadData];
-        [self.slidingViewController resetTopView];
     } else if (self.selectedCategory == 2) {
         _zdezMsgList = [zdezMsgDao findAll];
-        [self.tableView reloadData];
-        [self.slidingViewController resetTopView];
     }
+    [self.tableView reloadData];
+    [self.slidingViewController resetTopView];
     
 }
 

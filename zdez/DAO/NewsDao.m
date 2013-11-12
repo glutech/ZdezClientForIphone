@@ -11,11 +11,26 @@
 
 @implementation NewsDao
 
+- (NSString *)generateDBFilename
+{
+    NSString *dbFilename = [[NSString alloc] init];
+    // 每个用户使用不同的数据库
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    int userId = [userDefaults integerForKey:@"userId"];
+    NSString *idStr = [NSString stringWithFormat:@"%d", userId];
+    idStr = [idStr stringByAppendingString:@"_"];
+    dbFilename = [dbFilename stringByAppendingString:idStr];
+    dbFilename = [dbFilename stringByAppendingString:DBFILE_NAME];
+    NSLog(@"dbFilename: %@", dbFilename);
+    return dbFilename;
+}
+
 - (NSString *)applicationDocumentsDirectoryFile
 {
     NSArray *myPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *myDocPath = [myPaths objectAtIndex:0];
-    NSString *filename = [myDocPath stringByAppendingPathComponent:DBFILE_NAME];
+    
+    NSString *filename = [myDocPath stringByAppendingPathComponent:[self generateDBFilename]];
     
     return filename;
 }

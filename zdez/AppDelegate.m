@@ -92,8 +92,23 @@ NSString *deviceid;
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     //处理推送消息
-    NSLog(@"userInfo: %@", userInfo);
+//    NSLog(@"userInfo: %@", userInfo);
 //    NSLog(@"received message: %@", [[userInfo objectForKey:@"aps"] objectForKey:@"alert"]);
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    // 判断是否已登录过，如果已登录过，则直接进入程序主界面，否则进入登录页面
+    LoginService *ls = [[LoginService alloc] init];
+    if (ls.isLogined) {
+        NSLog(@"logined....");
+        self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"initialView"];
+    } else {
+        self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginView"];
+    }
+    
+    [self.window makeKeyAndVisible];
 }
 
 @end

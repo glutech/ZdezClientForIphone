@@ -16,7 +16,7 @@
 
 @end
 
-@interface SettingsViewController : UIViewController
+@interface SettingsViewController : UIViewController <UIAlertViewDelegate>
 
 @property (nonatomic, weak) id <SettingsViewControllerDelegate> delegate;
 

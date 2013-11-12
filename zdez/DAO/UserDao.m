@@ -212,19 +212,16 @@
         sqlite3_close(db);
         NSAssert(NO, @"open db failed...");
     } else {
-        NSString *sql = @"DELETE * FROM user";
-        sqlite3_stmt *statement;
+        NSString *sql = @"DELETE FROM user";
         
-        // 预处理过程
-        if (sqlite3_prepare_v2(db, [sql UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-            
-//            while (sqlite3_step(statement) == SQLITE_ROW) {
-//                
-//                userId = (int)sqlite3_column_int(statement, 0);
-//            }
-            sqlite3_step(statement);
+        char *err;
+        
+        if (sqlite3_exec(db, [sql UTF8String], NULL, NULL, &err) != SQLITE_OK) {
+            sqlite3_close(db);
+            NSAssert1(NO, @"delete userInfo failed...,%s", err);
+        } else {
+            NSLog(@"delete userInfo success!!");
         }
-        sqlite3_finalize(statement);
         sqlite3_close(db);
     }
 }

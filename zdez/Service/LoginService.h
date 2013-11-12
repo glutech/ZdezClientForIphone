@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+#define HOST_NAME @"http://192.168.1.110:8080/zdezServer/"
+
 @interface LoginService : NSObject
 
 -(int)login:(NSString*)username secondParameter:(NSString*)password;
 
 - (BOOL)isLogined;
 
-- (void)logOut;
+- (BOOL)logOut;
 
 @end

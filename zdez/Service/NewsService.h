@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define HOST_NAME @"http://192.168.1.110:8080/zdezServer/"
+
 @interface NewsService : NSObject
 
 - (NSMutableArray *)getNews;

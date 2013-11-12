@@ -43,14 +43,32 @@
 
 - (IBAction)didLogOut:(id)sender
 {
-    [self performSegueWithIdentifier:@"logout" sender:self];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"确定要退出？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert show];
+    return;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if ([segue.identifier isEqualToString:@"logout"]) {
+    NSString *str = [NSString stringWithFormat:@"%@", [alertView buttonTitleAtIndex:buttonIndex]];
+    if ([str isEqualToString:@"确定"]){
         LoginService *service = [[LoginService alloc] init];
-        [service logOut];
+        if ([service logOut]) {
+            
+            // 清除NSUserDefaults
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults removeObjectForKey:@"userId"];
+            [userDefaults removeObjectForKey:@"username"];
+            
+            [userDefaults synchronize];
+            
+            [self performSegueWithIdentifier:@"logout" sender:self];
+        } else {
+            UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络错误" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [alert1 show];
+            return;
+        }
+ 
     }
 }
 
