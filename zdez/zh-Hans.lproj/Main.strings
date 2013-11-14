@@ -1,0 +1,75 @@
+
+/* Class = "IBUIButton"; normalTitle = "ModifyPsw"; ObjectID = "2sV-Fy-ahM"; */
+"2sV-Fy-ahM.normalTitle" = "ModifyPsw";
+
+/* Class = "IBUITextField"; placeholder = "username"; ObjectID = "3l9-fI-brS"; */
+"3l9-fI-brS.placeholder" = "username";
+
+/* Class = "IBUILabel"; text = "Tel: 0871-63323283"; ObjectID = "4JX-0U-7fP"; */
+"4JX-0U-7fP.text" = "Tel: 0871-63323283";
+
+/* Class = "IBUITextField"; placeholder = "newPassword"; ObjectID = "4LO-ac-eLw"; */
+"4LO-ac-eLw.placeholder" = "newPassword";
+
+/* Class = "IBUILabel"; text = "oldPsw"; ObjectID = "4fC-HJ-nqx"; */
+"4fC-HJ-nqx.text" = "oldPsw";
+
+/* Class = "IBUITextField"; placeholder = "password"; ObjectID = "6xk-Tf-451"; */
+"6xk-Tf-451.placeholder" = "password";
+
+/* Class = "IBUIButton"; normalTitle = "confirmModify"; ObjectID = "83O-dK-s1L"; */
+"83O-dK-s1L.normalTitle" = "confirmModify";
+
+/* Class = "IBUIButton"; normalTitle = "Login"; ObjectID = "8jA-Ai-3MH"; */
+"8jA-Ai-3MH.normalTitle" = "Login";
+
+/* Class = "IBUIButton"; normalTitle = "Logout"; ObjectID = "ANj-IF-eGm"; */
+"ANj-IF-eGm.normalTitle" = "Logout";
+
+/* Class = "IBUILabel"; text = "newPsw"; ObjectID = "B3U-9L-Rgd"; */
+"B3U-9L-Rgd.text" = "newPsw";
+
+/* Class = "IBUIBarButtonItem"; title = "Settings"; ObjectID = "DaE-y4-xym"; */
+"DaE-y4-xym.title" = "Settings";
+
+/* Class = "IBUIButton"; normalTitle = "About"; ObjectID = "FjK-Mx-CNL"; */
+"FjK-Mx-CNL.normalTitle" = "About";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "JMT-nQ-PfR"; */
+"JMT-nQ-PfR.text" = "Title";
+
+/* Class = "IBUINavigationItem"; title = "Details"; ObjectID = "K2T-LU-1ej"; */
+"K2T-LU-1ej.title" = "Details";
+
+/* Class = "IBUILabel"; text = "Date"; ObjectID = "Qo4-Ge-hLs"; */
+"Qo4-Ge-hLs.text" = "Date";
+
+/* Class = "IBUITextField"; placeholder = "passwordCfm"; ObjectID = "SCe-sG-ezK"; */
+"SCe-sG-ezK.placeholder" = "passwordCfm";
+
+/* Class = "IBUITextField"; placeholder = "oldPassword"; ObjectID = "aPn-bz-EeI"; */
+"aPn-bz-EeI.placeholder" = "oldPassword";
+
+/* Class = "IBUILabel"; text = "email: service@zdez.com.cn"; ObjectID = "kqA-G5-rhc"; */
+"kqA-G5-rhc.text" = "email: service@zdez.com.cn";
+
+/* Class = "IBUILabel"; text = "MenuItem"; ObjectID = "nSd-sl-KAU"; */
+"nSd-sl-KAU.text" = "MenuItem";
+
+/* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "oMi-ec-PVw"; */
+"oMi-ec-PVw.title" = "Settings";
+
+/* Class = "IBUILabel"; text = "Version: 1.0"; ObjectID = "onj-aF-6IO"; */
+"onj-aF-6IO.text" = "Version: 1.0";
+
+/* Class = "IBUILabel"; text = "找得着"; ObjectID = "ppp-NM-zxy"; */
+"ppp-NM-zxy.text" = "找得着";
+
+/* Class = "IBUILabel"; text = "pswCfm"; ObjectID = "pyQ-rj-fCs"; */
+"pyQ-rj-fCs.text" = "pswCfm";
+
+/* Class = "IBUINavigationItem"; title = "Title"; ObjectID = "rj6-Jm-6yv"; */
+"rj6-Jm-6yv.title" = "Title";
+
+/* Class = "IBUILabel"; text = "www.zdez.cn"; ObjectID = "t45-8b-zFb"; */
+"t45-8b-zFb.text" = "www.zdez.cn";
