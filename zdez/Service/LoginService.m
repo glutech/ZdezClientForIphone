@@ -60,8 +60,6 @@ extern NSString* deviceid;
         result = 2;
     }
     
-    /*[request responseData]；后半部分留给徐*/
-    
     NSLog(@"My token is: %@", deviceid);
     
     return result;

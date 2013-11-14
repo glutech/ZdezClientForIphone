@@ -8,9 +8,12 @@
 
 #import "NewsService.h"
 #import "ASIHTTPRequest.h"
+#import "ASIFormDataRequest.h"
 #import "ParseJson.h"
 #import "NewsDao.h"
 #import "UserDao.h"
+#import "AckType.h"
+#import "ToJson.h"
 
 @implementation NewsService
 
@@ -18,9 +21,9 @@
 {
     NSMutableArray *arrayDesc = [[NSMutableArray alloc] init];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    int userId = [userDefaults integerForKey:@"userId"];
+    NSUInteger userId = [userDefaults integerForKey:@"userId"];
     if (userId != 0) {
-        NSString *idStr = [NSString stringWithFormat:@"%d", userId];
+        NSString *idStr = [NSString stringWithFormat:@"%lu", (unsigned long)userId];
         NSString *address = @"AndroidClient_GetUpdateNews?user_id=";
         address = [address stringByAppendingString:idStr];
         address = [HOST_NAME stringByAppendingString:address];
@@ -66,6 +69,39 @@
     NewsDao *dao = [[NewsDao alloc] init];
     htmlContent = [dao getContent:newsId];
     return htmlContent;
+}
+
+- (void)sendAck:(NSMutableArray *)newsList
+{
+    AckType *ackType = [[AckType alloc] init];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    int userId = [userDefaults integerForKey:@"userId"];
+    NSString *userIdStr = [[NSString alloc] initWithFormat:@"%d", userId];
+    ackType.userIdStr = userIdStr;
+    NSMutableArray *temp = [[NSMutableArray alloc] init];
+    for (News *n in newsList) {
+        [temp addObject:[[NSString alloc] initWithFormat:@"%d", n.newsId]];
+    }
+    ackType.msgIdList = temp;
+    
+    ToJson *toJson = [[ToJson alloc] init];
+    NSString *ack = [toJson toJson:ackType];
+    
+    NSString *postURL = [NSString stringWithFormat:@"AndroidClient_UpdateNewsReceived"];
+    postURL = [HOST_NAME stringByAppendingString:postURL];
+    
+    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:postURL]];
+    
+    [request addPostValue:ack forKey:@"ack"];
+    
+    [request startSynchronous];
+    
+}
+
+- (void)changeIsReadState:(News *)newsMsg
+{
+    NewsDao *dao = [[NewsDao alloc] init];
+    [dao changeIsReadState:newsMsg];
 }
 
 @end

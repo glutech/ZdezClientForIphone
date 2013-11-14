@@ -36,7 +36,7 @@
     NSMutableArray *_zdezMsgList;
     NSIndexPath *_selectRow;
     NSString *_htmlContent;
-    int *_msgId;
+    int _msgId;
 }
 
 @property (nonatomic, weak) IBOutlet UINavigationItem *navigationTitle;
@@ -84,15 +84,6 @@
     NewsDao *newsDao = [[NewsDao alloc] init];
     SchoolMsgDao *schoolMsgDao = [[SchoolMsgDao alloc] init];
     ZdezMsgDao *zdezMsgDao = [[ZdezMsgDao alloc] init];
-    
-    //设置导航条标题
-//    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 , 100, 44)];
-//    titleLabel.backgroundColor = [UIColor clearColor];  //设置Label背景透明
-//    titleLabel.font = [UIFont boldSystemFontOfSize:20];  //设置文本字体与大小
-//    titleLabel.textColor = [UIColor colorWithRed:(0.0/255.0) green:(255.0 / 255.0) blue:(0.0 / 255.0) alpha:1];  //设置文本颜色
-//    titleLabel.textAlignment = NSTextAlignmentCenter;
-////    titleLabel.text = @"新闻咨询";  //设置标题
-//    self.navigationItem.titleView = self.titleLabel;
     
     [self refreshViewBeginRefreshing:_header];
     if (self.selectedCategory == 0) {
@@ -154,6 +145,7 @@
         self.slidingViewController.underLeftViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MenuView"];
         
         [(MenuViewController *)self.slidingViewController.underLeftViewController setCategoryList:self.msgCategories];
+        
     }
     
     // Add the pan gesture to allow sliding
@@ -203,6 +195,11 @@
         nMsg = _newsList[indexPath.row];
         
         cell.titleLabel.text = nMsg.title;
+        if (nMsg.isRead == 0) {
+            cell.titleLabel.textColor = [UIColor orangeColor];
+        } else {
+            cell.titleLabel.textColor = [UIColor blackColor];
+        }
         NSString *detaStr = [dFormatter stringFromDate:nMsg.date];
         cell.dateLabel.text = detaStr;
         
@@ -210,6 +207,11 @@
         sMsg = _schoolMsgList[indexPath.row];
         
         cell.titleLabel.text = sMsg.title;
+        if (sMsg.isRead == 0) {
+            cell.titleLabel.textColor = [UIColor orangeColor];
+        } else {
+            cell.titleLabel.textColor = [UIColor blackColor];
+        }
         NSString *detaStr = [dFormatter stringFromDate:sMsg.date];
         cell.dateLabel.text = detaStr;
         
@@ -217,6 +219,11 @@
         zMsg = _zdezMsgList[indexPath.row];
         
         cell.titleLabel.text = zMsg.title;
+        if (sMsg.isRead == 0) {
+            cell.titleLabel.textColor = [UIColor orangeColor];
+        } else {
+            cell.titleLabel.textColor = [UIColor blackColor];
+        }
         NSString *detaStr = [dFormatter stringFromDate:zMsg.date];
         cell.dateLabel.text = detaStr;
         
@@ -235,14 +242,62 @@
         News *n = _newsList[indexPath.row];
         NewsService *newsService = [[NewsService alloc] init];
         _htmlContent = [newsService getContent:n.newsId];
+        
+        // 设置已读
+        if (n.isRead == 0 ) {
+            [newsService changeIsReadState:n];
+            
+            // 已读，角标-1
+            int badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
+            if (badge > 0) {
+                badge--;
+                [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
+            }
+        }
+        
+        // 更改被点击信息条目的已读标志位，用于改变标题颜色
+        n.isRead = 1;
+        _newsList[indexPath.row] = n;
+        
     } else if (self.selectedCategory == 1) {
         SchoolMsg *sMsg = _schoolMsgList[indexPath.row];
         SchoolMsgService *sMsgService = [[SchoolMsgService alloc] init];
         _htmlContent = [sMsgService getContent:sMsg.schoolMsgId];
+        
+        // 设置已读
+        if (sMsg.isRead == 0) {
+            [sMsgService changeIsReadState:sMsg];
+            
+            int badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
+            if (badge > 0) {
+                badge--;
+                [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
+            }
+        }
+        
+        // 更改被点击信息条目的已读标志位，用于改变标题颜色
+        sMsg.isRead = 1;
+        _schoolMsgList[indexPath.row] = sMsg;
+        
     } else if (self.selectedCategory == 2) {
         ZdezMsg *zMsg = _zdezMsgList[indexPath.row];
         ZdezMsgService *zMsgService = [[ZdezMsgService alloc] init];
         _htmlContent = [zMsgService getContent:zMsg.zdezMsgId];
+        
+        // 设置已读
+        if (zMsg.isRead == 0) {
+            [zMsgService changeIsReadState:zMsg];
+            
+            int badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
+            if (badge > 0) {
+                badge--;
+                [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
+            }
+        }
+        
+        // 更改被点击信息条目的已读标志位，用于改变标题颜色
+        zMsg.isRead = 1;
+        _zdezMsgList[indexPath.row] = zMsg;
     }
     
     [self performSegueWithIdentifier:@"toWebContent" sender:self];
@@ -262,16 +317,28 @@
             _newsList = [newsService getNews];
             NewsDao *newsDao = [[NewsDao alloc] init];
             [newsDao insert:_newsList];
+            
+            // 告诉服务器我收到这些信息了
+            [newsService sendAck:_newsList];
+            _newsList = [newsDao findAll];
         } else if (self.selectedCategory == 1) {
             SchoolMsgService *schoolMsgService = [[SchoolMsgService alloc] init];
             _schoolMsgList = [schoolMsgService getSchoolMsg];
             SchoolMsgDao *schoolMsgDao = [[SchoolMsgDao alloc] init];
             [schoolMsgDao insert:_schoolMsgList];
+            
+            // 告诉服务器我收到这些信息了
+            [schoolMsgService sendAck:_schoolMsgList];
+            _schoolMsgList = [schoolMsgDao findAll];
         } else if (self.selectedCategory == 2) {
             ZdezMsgService *zdezMsgService = [[ZdezMsgService alloc] init];
             _zdezMsgList = [zdezMsgService getZdezMsg];
             ZdezMsgDao *zdezMsgDao = [[ZdezMsgDao alloc] init];
             [zdezMsgDao insert:_zdezMsgList];
+            
+            // 告诉服务器我收到这些信息了
+            [zdezMsgService sendAck:_zdezMsgList];
+            _zdezMsgList = [zdezMsgDao findAll];
         }
         
     } else {
@@ -314,6 +381,7 @@
 - (void)webContentControllerDidDone:(WebContentController *)controller
 {
     [self.tableView deselectRowAtIndexPath:_selectRow animated:YES];
+    [self.tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

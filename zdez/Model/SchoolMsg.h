@@ -15,5 +15,6 @@
 @property (nonatomic, retain) NSString *content;
 @property (nonatomic, retain) NSDate *date;
 @property (nonatomic, retain) NSString *remarks;
+@property (nonatomic) int isRead;
 
 @end

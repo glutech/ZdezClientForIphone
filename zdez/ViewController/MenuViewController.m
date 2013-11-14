@@ -35,7 +35,6 @@
     self.slidingViewController.underLeftWidthLayout = ECFullWidth;
     
     self.categoryList = @[];
-    
 }
 
 #pragma mark - TableView DataSource
@@ -47,9 +46,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    static NSString *CellIdentifier = @"Cell";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
     MenuCell *cell = (MenuCell *)[tableView dequeueReusableCellWithIdentifier:@"MenuCell"];
     
     NSString *menuName = self.categoryList[indexPath.row];

@@ -10,6 +10,6 @@
 
 @implementation ZdezMsg
 
-@synthesize zdezMsgId, title, content, date;
+@synthesize zdezMsgId, title, content, date, isRead;
 
 @end

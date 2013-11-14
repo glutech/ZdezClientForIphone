@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AckType.h"
 
 @interface ToJson : NSObject
+
+- (NSString *)toJson:(AckType *)ackType;
 
 @end

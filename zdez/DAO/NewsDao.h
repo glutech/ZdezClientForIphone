@@ -30,4 +30,6 @@
 
 - (NSString *)getContent:(int)newsId;
 
+- (void)changeIsReadState:(News *)news;
+
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ZdezMsg.h"
 
 #define HOST_NAME @"http://192.168.1.110:8080/zdezServer/"
 
@@ -14,5 +15,7 @@
 
 - (NSMutableArray *)getZdezMsg;
 - (NSString *)getContent:(int)msgId;
+- (void)sendAck:(NSMutableArray *)msgList;
+- (void)changeIsReadState:(ZdezMsg *)zMsg;
 
 @end

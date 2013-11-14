@@ -21,7 +21,6 @@
     idStr = [idStr stringByAppendingString:@"_"];
     dbFilename = [dbFilename stringByAppendingString:idStr];
     dbFilename = [dbFilename stringByAppendingString:DBFILE_NAME];
-    NSLog(@"dbFilename: %@", dbFilename);
     return dbFilename;
 }
 
@@ -47,7 +46,7 @@
         
         char *err;
         
-        NSString *createSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS schoolMsg (schoolMsgId INTEGER PRIMARY KEY , title String, content String, date Date, remarks String);"];
+        NSString *createSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS schoolMsg (schoolMsgId INTEGER PRIMARY KEY , title String, content String, date Date, remarks String, isRead INTEGER DEFAULT 0);"];
         
         if (sqlite3_exec(db, [createSQL UTF8String], NULL, NULL, &err) != SQLITE_OK) {
             sqlite3_close(db);
@@ -125,7 +124,7 @@
         sqlite3_close(db);
         NSAssert(NO, @"open db failed...");
     } else {
-        NSString *sql = @"SELECT schoolMsgId, title, date FROM schoolMsg ORDER BY schoolMsgId DESC";
+        NSString *sql = @"SELECT schoolMsgId, title, date, isRead FROM schoolMsg ORDER BY schoolMsgId DESC";
         sqlite3_stmt *statement;
         
         // 预处理过程
@@ -144,10 +143,13 @@
                 char *cdate = (char *)sqlite3_column_text(statement, 2);
                 NSString *nsDate = [[NSString alloc] initWithUTF8String:cdate];
                 
+                int isRead = (int)sqlite3_column_int(statement, 3);
+                
                 SchoolMsg *msg = [[SchoolMsg alloc] init];
                 msg.schoolMsgId = schoolMsgId;
                 msg.title = nsTitle;
                 msg.date = [dateFormatter dateFromString:nsDate];
+                msg.isRead = isRead;
                 
                 [data addObject:msg];
             }
@@ -194,6 +196,32 @@
     }
     
     return htmlContent;
+}
+
+- (void)changeIsReadState:(SchoolMsg *)sMsg
+{
+    NSString *path = [self applicationDocumentsDirectoryFile];
+    
+    if (sqlite3_open([path UTF8String], &db) != SQLITE_OK) {
+        sqlite3_close(db);
+        NSAssert(NO, @"open db failed...");
+    } else {
+        NSString *sql = @"UPDATE schoolMsg set isRead = 1 WHERE schoolMsgId = ?";
+        //        NSString *sql = @"SELECT content FROM news WHERE newsId = ?";
+        sqlite3_stmt *statement;
+        
+        // 预处理过程
+        if (sqlite3_prepare_v2(db, [sql UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            sqlite3_bind_int(statement, 1, sMsg.schoolMsgId);
+            
+            sqlite3_step(statement);
+            
+        }
+        
+        sqlite3_finalize(statement);
+        
+        sqlite3_close(db);
+    }
 }
 
 @end

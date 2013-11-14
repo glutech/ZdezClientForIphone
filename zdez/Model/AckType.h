@@ -10,4 +10,7 @@
 
 @interface AckType : NSObject
 
+@property (nonatomic, strong) NSString *userIdStr;
+@property (nonatomic, strong) NSMutableArray *msgIdList;
+
 @end

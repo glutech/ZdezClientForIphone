@@ -10,4 +10,6 @@
 
 @implementation AckType
 
+@synthesize userIdStr, msgIdList;
+
 @end

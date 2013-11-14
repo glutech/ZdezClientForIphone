@@ -1,63 +1,63 @@
 
 /* Class = "IBUIButton"; normalTitle = "ModifyPsw"; ObjectID = "2sV-Fy-ahM"; */
-"2sV-Fy-ahM.normalTitle" = "ModifyPsw";
+"2sV-Fy-ahM.normalTitle" = "修改密码";
 
 /* Class = "IBUITextField"; placeholder = "username"; ObjectID = "3l9-fI-brS"; */
-"3l9-fI-brS.placeholder" = "username";
+"3l9-fI-brS.placeholder" = "用户名";
 
 /* Class = "IBUILabel"; text = "Tel: 0871-63323283"; ObjectID = "4JX-0U-7fP"; */
 "4JX-0U-7fP.text" = "Tel: 0871-63323283";
 
 /* Class = "IBUITextField"; placeholder = "newPassword"; ObjectID = "4LO-ac-eLw"; */
-"4LO-ac-eLw.placeholder" = "newPassword";
+"4LO-ac-eLw.placeholder" = "新密码";
 
 /* Class = "IBUILabel"; text = "oldPsw"; ObjectID = "4fC-HJ-nqx"; */
-"4fC-HJ-nqx.text" = "oldPsw";
+"4fC-HJ-nqx.text" = "原密码";
 
 /* Class = "IBUITextField"; placeholder = "password"; ObjectID = "6xk-Tf-451"; */
-"6xk-Tf-451.placeholder" = "password";
+"6xk-Tf-451.placeholder" = "密码";
 
 /* Class = "IBUIButton"; normalTitle = "confirmModify"; ObjectID = "83O-dK-s1L"; */
-"83O-dK-s1L.normalTitle" = "confirmModify";
+"83O-dK-s1L.normalTitle" = "确认";
 
 /* Class = "IBUIButton"; normalTitle = "Login"; ObjectID = "8jA-Ai-3MH"; */
-"8jA-Ai-3MH.normalTitle" = "Login";
+"8jA-Ai-3MH.normalTitle" = "登录";
 
 /* Class = "IBUIButton"; normalTitle = "Logout"; ObjectID = "ANj-IF-eGm"; */
-"ANj-IF-eGm.normalTitle" = "Logout";
+"ANj-IF-eGm.normalTitle" = "注销登录";
 
 /* Class = "IBUILabel"; text = "newPsw"; ObjectID = "B3U-9L-Rgd"; */
-"B3U-9L-Rgd.text" = "newPsw";
+"B3U-9L-Rgd.text" = "新密码";
 
 /* Class = "IBUIBarButtonItem"; title = "Settings"; ObjectID = "DaE-y4-xym"; */
-"DaE-y4-xym.title" = "Settings";
+"DaE-y4-xym.title" = "设置";
 
 /* Class = "IBUIButton"; normalTitle = "About"; ObjectID = "FjK-Mx-CNL"; */
-"FjK-Mx-CNL.normalTitle" = "About";
+"FjK-Mx-CNL.normalTitle" = "关于";
 
 /* Class = "IBUILabel"; text = "Title"; ObjectID = "JMT-nQ-PfR"; */
-"JMT-nQ-PfR.text" = "Title";
+"JMT-nQ-PfR.text" = "标题";
 
 /* Class = "IBUINavigationItem"; title = "Details"; ObjectID = "K2T-LU-1ej"; */
-"K2T-LU-1ej.title" = "Details";
+"K2T-LU-1ej.title" = "信息详情";
 
 /* Class = "IBUILabel"; text = "Date"; ObjectID = "Qo4-Ge-hLs"; */
-"Qo4-Ge-hLs.text" = "Date";
+"Qo4-Ge-hLs.text" = "日期";
 
 /* Class = "IBUITextField"; placeholder = "passwordCfm"; ObjectID = "SCe-sG-ezK"; */
-"SCe-sG-ezK.placeholder" = "passwordCfm";
+"SCe-sG-ezK.placeholder" = "密码确认";
 
 /* Class = "IBUITextField"; placeholder = "oldPassword"; ObjectID = "aPn-bz-EeI"; */
-"aPn-bz-EeI.placeholder" = "oldPassword";
+"aPn-bz-EeI.placeholder" = "原密码";
 
 /* Class = "IBUILabel"; text = "email: service@zdez.com.cn"; ObjectID = "kqA-G5-rhc"; */
 "kqA-G5-rhc.text" = "email: service@zdez.com.cn";
 
 /* Class = "IBUILabel"; text = "MenuItem"; ObjectID = "nSd-sl-KAU"; */
-"nSd-sl-KAU.text" = "MenuItem";
+"nSd-sl-KAU.text" = "菜单项";
 
 /* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "oMi-ec-PVw"; */
-"oMi-ec-PVw.title" = "Settings";
+"oMi-ec-PVw.title" = "设置";
 
 /* Class = "IBUILabel"; text = "Version: 1.0"; ObjectID = "onj-aF-6IO"; */
 "onj-aF-6IO.text" = "Version: 1.0";
@@ -66,10 +66,10 @@
 "ppp-NM-zxy.text" = "找得着";
 
 /* Class = "IBUILabel"; text = "pswCfm"; ObjectID = "pyQ-rj-fCs"; */
-"pyQ-rj-fCs.text" = "pswCfm";
+"pyQ-rj-fCs.text" = "密码确认";
 
 /* Class = "IBUINavigationItem"; title = "Title"; ObjectID = "rj6-Jm-6yv"; */
-"rj6-Jm-6yv.title" = "Title";
+"rj6-Jm-6yv.title" = "标题";
 
 /* Class = "IBUILabel"; text = "www.zdez.cn"; ObjectID = "t45-8b-zFb"; */
 "t45-8b-zFb.text" = "www.zdez.cn";

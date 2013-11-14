@@ -10,6 +10,6 @@
 
 @implementation SchoolMsg
 
-@synthesize schoolMsgId, title, content, date, remarks;
+@synthesize schoolMsgId, title, content, date, remarks, isRead;
 
 @end

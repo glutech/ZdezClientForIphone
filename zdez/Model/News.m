@@ -10,6 +10,6 @@
 
 @implementation News
 
-@synthesize newsId, title, content, date;
+@synthesize newsId, title, content, date, isTop, isRead;
 
 @end

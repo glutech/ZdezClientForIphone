@@ -21,7 +21,6 @@
     idStr = [idStr stringByAppendingString:@"_"];
     dbFilename = [dbFilename stringByAppendingString:idStr];
     dbFilename = [dbFilename stringByAppendingString:DBFILE_NAME];
-    NSLog(@"dbFilename: %@", dbFilename);
     return dbFilename;
 }
 
@@ -47,7 +46,7 @@
         
         char *err;
         
-        NSString *createSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS zdezMsg (zdezMsgId INTEGER PRIMARY KEY , title String, content String, date Date);"];
+        NSString *createSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS zdezMsg (zdezMsgId INTEGER PRIMARY KEY , title String, content String, date Date, isRead INTEGER DEFAULT 0);"];
         
         if (sqlite3_exec(db, [createSQL UTF8String], NULL, NULL, &err) != SQLITE_OK) {
             sqlite3_close(db);
@@ -88,12 +87,6 @@
                 
                 [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
                 
-                
-                //                NSLog(@"title: %@", msg.title);
-                //                NSLog(@"content: %@", msg.content);
-                //                NSLog(@"date: %@", msg.date);
-                //                NSLog(@"remarks: %@", msg.remarks);
-                
                 NSString *nsDate = [dateFormatter stringFromDate:msg.date];
                 
                 // 绑定参数
@@ -124,7 +117,7 @@
         sqlite3_close(db);
         NSAssert(NO, @"open db failed...");
     } else {
-        NSString *sql = @"SELECT zdezMsgId, title, date FROM zdezMsg ORDER BY zdezMsgId DESC";
+        NSString *sql = @"SELECT zdezMsgId, title, date, isRead FROM zdezMsg ORDER BY zdezMsgId DESC";
         sqlite3_stmt *statement;
         
         // 预处理过程
@@ -143,10 +136,13 @@
                 char *cdate = (char *)sqlite3_column_text(statement, 2);
                 NSString *nsDate = [[NSString alloc] initWithUTF8String:cdate];
                 
+                int isRead = (int)sqlite3_column_int(statement, 3);
+                
                 ZdezMsg *msg = [[ZdezMsg alloc] init];
                 msg.zdezMsgId = zdezMsgId;
                 msg.title = nsTitle;
                 msg.date = [dateFormatter dateFromString:nsDate];
+                msg.isRead = isRead;
                 
                 [data addObject:msg];
             }
@@ -193,6 +189,32 @@
     }
     
     return htmlContent;
+}
+
+- (void)changeIsReadState:(ZdezMsg *)zMsg
+{
+    NSString *path = [self applicationDocumentsDirectoryFile];
+    
+    if (sqlite3_open([path UTF8String], &db) != SQLITE_OK) {
+        sqlite3_close(db);
+        NSAssert(NO, @"open db failed...");
+    } else {
+        NSString *sql = @"UPDATE zdezMsg set isRead = 1 WHERE zdezMsgId = ?";
+        //        NSString *sql = @"SELECT content FROM news WHERE newsId = ?";
+        sqlite3_stmt *statement;
+        
+        // 预处理过程
+        if (sqlite3_prepare_v2(db, [sql UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            sqlite3_bind_int(statement, 1, zMsg.zdezMsgId);
+            
+            sqlite3_step(statement);
+            
+        }
+        
+        sqlite3_finalize(statement);
+        
+        sqlite3_close(db);
+    }
 }
 
 @end

@@ -30,4 +30,6 @@
 
 - (NSString *)getContent:(int)msgId;
 
+- (void)changeIsReadState:(SchoolMsg *)sMsg;
+
 @end

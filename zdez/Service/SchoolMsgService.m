@@ -11,6 +11,9 @@
 #import "ParseJson.h"
 #import "UserDao.h"
 #import "SchoolMsgDao.h"
+#import "AckType.h"
+#import "ToJson.h"
+#import "ASIFormDataRequest.h"
 
 @implementation SchoolMsgService
 
@@ -67,6 +70,39 @@
     SchoolMsgDao *dao = [[SchoolMsgDao alloc] init];
     htmlContent = [dao getContent:msgId];
     return htmlContent;
+}
+
+- (void)sendAck:(NSMutableArray *)msgList
+{
+    AckType *ackType = [[AckType alloc] init];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    int userId = [userDefaults integerForKey:@"userId"];
+    NSString *userIdStr = [[NSString alloc] initWithFormat:@"%d", userId];
+    ackType.userIdStr = userIdStr;
+    NSMutableArray *temp = [[NSMutableArray alloc] init];
+    for (SchoolMsg *msg in msgList) {
+        [temp addObject:[[NSString alloc] initWithFormat:@"%d", msg.schoolMsgId]];
+    }
+    ackType.msgIdList = temp;
+    
+    ToJson *toJson = [[ToJson alloc] init];
+    NSString *ack = [toJson toJson:ackType];
+    
+    NSString *postURL = [NSString stringWithFormat:@"AndroidClient_UpdateSchoolMsgReceived"];
+    postURL = [HOST_NAME stringByAppendingString:postURL];
+    
+    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:postURL]];
+    
+    [request addPostValue:ack forKey:@"ack"];
+    
+    [request startSynchronous];
+    
+}
+
+- (void)changeIsReadState:(SchoolMsg *)sMsg
+{
+    SchoolMsgDao *dao = [[SchoolMsgDao alloc] init];
+    [dao changeIsReadState:sMsg];
 }
 
 @end
