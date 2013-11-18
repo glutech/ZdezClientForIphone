@@ -23,12 +23,15 @@
 #import "ZdezMsgService.h"
 #import "WebContentController.h"
 #import "SettingsViewController.h"
+#import "UserService.h"
+#import "ASIHTTPRequest.h"
+#import "ParseJson.h"
 
 #import <QuartzCore/QuartzCore.h>
 
 @interface MsgListViewController () <UITableViewDataSource, UITableViewDelegate, MenuViewControllerDelegate, MJRefreshBaseViewDelegate> {
     
-//    MJRefreshFooterView *_footer;
+    MJRefreshFooterView *_footer;
     MJRefreshHeaderView *_header;
     
     NSMutableArray *_newsList;
@@ -37,6 +40,11 @@
     NSIndexPath *_selectRow;
     NSString *_htmlContent;
     int _msgId;
+    
+    // 记录刷新次数，用于分段加载信息
+    int _newsRefreshCount;
+    int _sMsgRefreshCount;
+    int _zMsgRefreshCount;
 }
 
 @property (nonatomic, weak) IBOutlet UINavigationItem *navigationTitle;
@@ -72,32 +80,37 @@
     _header.scrollView = self.tableView;
     
     // 上拉加载更多
-//    _footer = [[MJRefreshFooterView alloc] init];
-//    _footer.delegate = self;
-//    _footer.scrollView = self.tableView;
+    _footer = [[MJRefreshFooterView alloc] init];
+    _footer.delegate = self;
+    _footer.scrollView = self.tableView;
     
     // 假数据
     _newsList = [NSMutableArray array];
     _schoolMsgList = [NSMutableArray array];
     _zdezMsgList = [NSMutableArray array];
     
-    NewsDao *newsDao = [[NewsDao alloc] init];
-    SchoolMsgDao *schoolMsgDao = [[SchoolMsgDao alloc] init];
-    ZdezMsgDao *zdezMsgDao = [[ZdezMsgDao alloc] init];
+    _newsRefreshCount = 1;
+    _sMsgRefreshCount = 1;
+    _zMsgRefreshCount = 1;
+    
+    NewsService *newsService = [[NewsService alloc] init];
+    SchoolMsgService *sMsgService = [[SchoolMsgService alloc] init];
+    ZdezMsgService *zMsgService = [[ZdezMsgService alloc] init];
     
     [self refreshViewBeginRefreshing:_header];
     if (self.selectedCategory == 0) {
-        _newsList = [newsDao findAll];
+        _newsList = [newsService getByRefreshCount:_newsRefreshCount];
     } else if (self.selectedCategory == 1) {
-        _schoolMsgList = [schoolMsgDao findAll];
+        _schoolMsgList = [sMsgService getByRefreshCount:_sMsgRefreshCount];
     } else if (self.selectedCategory == 2) {
-        _zdezMsgList = [zdezMsgDao findAll];
+        _zdezMsgList = [zMsgService getByRefreshCount:_zMsgRefreshCount];
     }
     
     // 定义侧滑菜单选项
     self.msgCategories = @[@"新闻资讯", @"校园通知", @"找得着"];
     self.navigationTitle.title = self.msgCategories[self.selectedCategory];
-    
+//    [[UIView appearance] setBackgroundColor:UIColorFromRGB(0xF86E23)];
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"nv_bg.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -114,17 +127,17 @@
     _schoolMsgList = [NSMutableArray array];
     _zdezMsgList = [NSMutableArray array];
     
-    NewsDao *newsDao = [[NewsDao alloc] init];
-    SchoolMsgDao *schoolMsgDao = [[SchoolMsgDao alloc] init];
-    ZdezMsgDao *zdezMsgDao = [[ZdezMsgDao alloc] init];
+    NewsService *newsService = [[NewsService alloc] init];
+    SchoolMsgService *sMsgService = [[SchoolMsgService alloc] init];
+    ZdezMsgService *zMsgService = [[ZdezMsgService alloc] init];
     
     [self refreshViewBeginRefreshing:_header];
     if (self.selectedCategory == 0) {
-        _newsList = [newsDao findAll];
+        _newsList = [newsService getByRefreshCount:1];
     } else if (self.selectedCategory == 1) {
-        _schoolMsgList = [schoolMsgDao findAll];
+        _schoolMsgList = [sMsgService getByRefreshCount:1];
     } else if (self.selectedCategory == 2) {
-        _zdezMsgList = [zdezMsgDao findAll];
+        _zdezMsgList = [zMsgService getByRefreshCount:1];
     }
     [self.tableView reloadData];
     [self.slidingViewController resetTopView];
@@ -145,7 +158,6 @@
         self.slidingViewController.underLeftViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MenuView"];
         
         [(MenuViewController *)self.slidingViewController.underLeftViewController setCategoryList:self.msgCategories];
-        
     }
     
     // Add the pan gesture to allow sliding
@@ -158,7 +170,7 @@
 {
     // 让刷新控件恢复默认的状态
     [_header endRefreshing];
-//    [_footer endRefreshing];
+    [_footer endRefreshing];
     
     int count = 0;
     
@@ -219,7 +231,7 @@
         zMsg = _zdezMsgList[indexPath.row];
         
         cell.titleLabel.text = zMsg.title;
-        if (sMsg.isRead == 0) {
+        if (zMsg.isRead == 0) {
             cell.titleLabel.textColor = [UIColor orangeColor];
         } else {
             cell.titleLabel.textColor = [UIColor blackColor];
@@ -248,7 +260,7 @@
             [newsService changeIsReadState:n];
             
             // 已读，角标-1
-            int badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
+            NSInteger badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
             if (badge > 0) {
                 badge--;
                 [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
@@ -268,7 +280,7 @@
         if (sMsg.isRead == 0) {
             [sMsgService changeIsReadState:sMsg];
             
-            int badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
+            NSInteger badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
             if (badge > 0) {
                 badge--;
                 [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
@@ -288,7 +300,7 @@
         if (zMsg.isRead == 0) {
             [zMsgService changeIsReadState:zMsg];
             
-            int badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
+            NSInteger badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
             if (badge > 0) {
                 badge--;
                 [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
@@ -300,49 +312,61 @@
         _zdezMsgList[indexPath.row] = zMsg;
     }
     
+    // 告诉服务器信息已读
+    UserService *userService = [[UserService alloc] init];
+    [userService modifyBadge:[[NSUserDefaults standardUserDefaults] integerForKey:@"userId"]];
+    
     [self performSegueWithIdentifier:@"toWebContent" sender:self];
 }
 
 #pragma mark 代理方法-进入刷新状态就会执行
 - (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
 {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"HH : mm : ss.SSS";
-    
     if (_header == refreshView) {
         // 下拉
         
         if (self.selectedCategory == 0) {
             NewsService *newsService = [[NewsService alloc] init];
-            _newsList = [newsService getNews];
-            NewsDao *newsDao = [[NewsDao alloc] init];
-            [newsDao insert:_newsList];
-            
-            // 告诉服务器我收到这些信息了
-            [newsService sendAck:_newsList];
-            _newsList = [newsDao findAll];
+            ASIHTTPRequest *request = [newsService getNewsRequest];
+            [request setDelegate:self];
+            [request startAsynchronous];
         } else if (self.selectedCategory == 1) {
             SchoolMsgService *schoolMsgService = [[SchoolMsgService alloc] init];
-            _schoolMsgList = [schoolMsgService getSchoolMsg];
-            SchoolMsgDao *schoolMsgDao = [[SchoolMsgDao alloc] init];
-            [schoolMsgDao insert:_schoolMsgList];
-            
-            // 告诉服务器我收到这些信息了
-            [schoolMsgService sendAck:_schoolMsgList];
-            _schoolMsgList = [schoolMsgDao findAll];
+            ASIHTTPRequest *request = [schoolMsgService getRequest];
+            [request setDelegate:self];
+            [request startAsynchronous];
         } else if (self.selectedCategory == 2) {
             ZdezMsgService *zdezMsgService = [[ZdezMsgService alloc] init];
-            _zdezMsgList = [zdezMsgService getZdezMsg];
-            ZdezMsgDao *zdezMsgDao = [[ZdezMsgDao alloc] init];
-            [zdezMsgDao insert:_zdezMsgList];
-            
-            // 告诉服务器我收到这些信息了
-            [zdezMsgService sendAck:_zdezMsgList];
-            _zdezMsgList = [zdezMsgDao findAll];
+            ASIHTTPRequest *request = [zdezMsgService getRequest];
+            [request setDelegate:self];
+            [request startAsynchronous];
         }
         
     } else {
         // 上拉
+        
+        if (self.selectedCategory == 0) {
+            NewsService *newsService = [[NewsService alloc] init];
+            _newsRefreshCount ++;
+            NSMutableArray *tempList = [newsService getByRefreshCount:_newsRefreshCount];
+            for (int i=0; i<[tempList count]; i++) {
+                [_newsList addObject:[tempList objectAtIndex:i]];
+            }
+        } else if (self.selectedCategory == 1) {
+            SchoolMsgService *schoolMsgService = [[SchoolMsgService alloc] init];
+            _sMsgRefreshCount ++;
+            NSMutableArray *tempList = [schoolMsgService getByRefreshCount:_sMsgRefreshCount];
+            for (int i=0; i<[tempList count]; i++) {
+                [_schoolMsgList addObject:[tempList objectAtIndex:i]];
+            }
+        } else if (self.selectedCategory == 2) {
+            ZdezMsgService *zdezMsgService = [[ZdezMsgService alloc] init];
+            _zMsgRefreshCount ++;
+            NSMutableArray *tempList = [zdezMsgService getByRefreshCount:_zMsgRefreshCount];
+            for (int i=0; i<[tempList count]; i++) {
+                [_zdezMsgList addObject:[tempList objectAtIndex:i]];
+            }
+        }
     }
     
     [NSTimer scheduledTimerWithTimeInterval:1 target:self.tableView selector:@selector(reloadData) userInfo:nil repeats:NO];
@@ -366,7 +390,7 @@
 
 - (void)dealloc
 {
-//    [_footer free];
+    [_footer free];
     [_header free];
 }
 
@@ -390,6 +414,71 @@
 - (void)settingsViewControllerDidDone:(SettingsViewController *)controller
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - ASIHTTPRequst
+
+// 异步加载信息
+// 处理获取到的信息
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSMutableArray *arrayDesc = [[NSMutableArray alloc] init];
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    ParseJson *pj = [[ParseJson alloc] init];
+    if (self.selectedCategory == 0) {
+        array = [pj parseNewsMsg:[request responseData]];
+        int count = [array count];
+        for (int i = count-1; i >= 0; i--) {
+            [arrayDesc addObject:[array objectAtIndex:i]];
+        }
+        NewsService *newsService = [[NewsService alloc] init];
+        [newsService insert:arrayDesc];
+        
+        // 告诉服务器我收到这些信息了
+        [newsService sendAck:arrayDesc];
+        
+        // 每次下拉刷新都是加载最新的20条
+        _newsRefreshCount = 1;
+        _newsList = [newsService getByRefreshCount:_newsRefreshCount];
+    } else if (self.selectedCategory == 1) {
+        array = [pj parseSchoolMsg:[request responseData]];
+        int count = [array count];
+        for (int i = count-1; i >= 0; i--) {
+            [arrayDesc addObject:[array objectAtIndex:i]];
+        }
+        SchoolMsgService *sMsgService = [[SchoolMsgService alloc] init];
+        [sMsgService insert:arrayDesc];
+        
+        // 告诉服务器我收到了这些信息
+        [sMsgService sendAck:arrayDesc];
+        
+        // 每次下拉刷新都是加载最新的20条信息
+        _sMsgRefreshCount = 1;
+        _schoolMsgList = [sMsgService getByRefreshCount:_sMsgRefreshCount];
+    } else if (self.selectedCategory == 2) {
+        array = [pj parseZdezMsg:[request responseData]];
+        int count = [array count];
+        for (int i = count-1; i >= 0; i--) {
+            [arrayDesc addObject:[array objectAtIndex:i]];
+        }
+        ZdezMsgService *zMsgService = [[ZdezMsgService alloc] init];
+        [zMsgService insert:arrayDesc];
+        
+        // 告诉服务器我收到了这些信息
+        [zMsgService sendAck:arrayDesc];
+        
+        // 每次下拉刷新都是加载最新的20条信息
+        _zMsgRefreshCount = 1;
+        _zdezMsgList = [zMsgService getByRefreshCount:_zMsgRefreshCount];
+    }
+    
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接超时，请稍后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+    [alert show];
+    return;
 }
 
 @end

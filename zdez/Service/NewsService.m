@@ -17,6 +17,28 @@
 
 @implementation NewsService
 
+- (ASIHTTPRequest *)getNewsRequest
+{
+    ASIHTTPRequest *request = nil;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUInteger userId = [userDefaults integerForKey:@"userId"];
+    if (userId != 0) {
+        NSString *idStr = [NSString stringWithFormat:@"%lu", (unsigned long)userId];
+        NSString *address = @"AndroidClient_GetUpdateNews?user_id=";
+        address = [address stringByAppendingString:idStr];
+        address = [HOST_NAME stringByAppendingString:address];
+        
+        NSURL *url = [NSURL URLWithString:address];
+        
+        // 构造ASIHTTPRequest对象
+        request = [ASIHTTPRequest requestWithURL:url];
+        [request setRequestMethod:@"GET"];
+        [request setTimeOutSeconds:5];
+    }
+    
+    return request;
+}
+
 - (NSMutableArray *)getNews
 {
     NSMutableArray *arrayDesc = [[NSMutableArray alloc] init];
@@ -63,6 +85,12 @@
     return arrayDesc;
 }
 
+- (int)insert:(NSMutableArray *)newsArray
+{
+    NewsDao *dao = [[NewsDao alloc] init];
+    return [dao insert:newsArray];
+}
+
 - (NSString *)getContent:(int)newsId
 {
     NSString *htmlContent = [[NSString alloc] init];
@@ -94,7 +122,7 @@
     
     [request addPostValue:ack forKey:@"ack"];
     
-    [request startSynchronous];
+    [request startAsynchronous];
     
 }
 
@@ -102,6 +130,12 @@
 {
     NewsDao *dao = [[NewsDao alloc] init];
     [dao changeIsReadState:newsMsg];
+}
+
+- (NSMutableArray *)getByRefreshCount:(int)count
+{
+    NewsDao *dao = [[NewsDao alloc] init];
+    return [dao getByRefreshCount:count];
 }
 
 @end

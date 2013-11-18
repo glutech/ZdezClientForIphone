@@ -31,10 +31,11 @@
 {
     [super viewDidLoad];
     
-    [self.slidingViewController setAnchorRightRevealAmount:180.0f];
+    [self.slidingViewController setAnchorRightRevealAmount:190.0f];
     self.slidingViewController.underLeftWidthLayout = ECFullWidth;
     
     self.categoryList = @[];
+    self.usernameLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"name"];
 }
 
 #pragma mark - TableView DataSource
@@ -51,6 +52,13 @@
     NSString *menuName = self.categoryList[indexPath.row];
     
     cell.menuItem.text = menuName;
+    if (indexPath.row == 0) {
+        cell.msgImage.image = [UIImage imageNamed:@"msg_type_0.png"];
+    } else if (indexPath.row == 1) {
+        cell.msgImage.image = [UIImage imageNamed:@"msg_type_1.png"];
+    } else if (indexPath.row == 2) {
+        cell.msgImage.image = [UIImage imageNamed:@"msg_type_2.png"];
+    }
     
     return cell;
 }
@@ -66,4 +74,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+- (IBAction)opneZdez:(id)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.zdez.cn"]];
+}
 @end

@@ -28,6 +28,7 @@ NSString *deviceid;
         NSLog(@"userInfo: %@", pushInfoStr);
     }
     
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
@@ -99,9 +100,6 @@ NSString *deviceid;
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
-    // 收到消息时，角标数+1
-    [UIApplication sharedApplication].applicationIconBadgeNumber++;
-    
     // 判断是否已登录过，如果已登录过，则直接进入程序主界面，否则进入登录页面
     LoginService *ls = [[LoginService alloc] init];
     if (ls.isLogined) {
@@ -112,6 +110,12 @@ NSString *deviceid;
     }
     
     [self.window makeKeyAndVisible];
+}
+
+// 禁止横屏
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 @end

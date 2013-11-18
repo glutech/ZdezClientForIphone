@@ -16,12 +16,22 @@
 
 @end
 
-@interface SettingsViewController : UIViewController <UIAlertViewDelegate>
+@interface SettingsViewController : UITableViewController <UIAlertViewDelegate>
 
 @property (nonatomic, weak) id <SettingsViewControllerDelegate> delegate;
 
 - (IBAction)didDone:(id)sender;
 
 - (IBAction)didLogOut:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UIImageView *viewUserInfoImage;
+
+@property (weak, nonatomic) IBOutlet UIImageView *modifyPswImage;
+
+@property (weak, nonatomic) IBOutlet UIImageView *bokeTechImage;
+
+@property (weak, nonatomic) IBOutlet UIImageView *softwareImage;
+
+@property (weak, nonatomic) IBOutlet UIImageView *feedbackImage;
 
 @end

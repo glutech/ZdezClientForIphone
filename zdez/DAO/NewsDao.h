@@ -28,8 +28,13 @@
 // 查询所有news方法
 - (NSMutableArray *)findAll;
 
+// 通过newsId获取新闻内容
 - (NSString *)getContent:(int)newsId;
 
+// 改变新闻的已读未读状态
 - (void)changeIsReadState:(News *)news;
+
+// 分段加载信息
+- (NSMutableArray *)getByRefreshCount:(int)count;
 
 @end

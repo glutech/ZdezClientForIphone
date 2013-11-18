@@ -47,6 +47,7 @@ extern NSString* deviceid;
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             [userDefaults setInteger:user.userId forKey:@"userId"];
             [userDefaults setObject:user.username forKey:@"username"];
+            [userDefaults setObject:user.name forKey:@"name"];
             // 保存到磁盘上
             [userDefaults synchronize];
             

@@ -28,6 +28,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.viewUserInfoImage.image = [UIImage imageNamed:@"view_user_info.png"];
+    self.modifyPswImage.image = [UIImage imageNamed:@"modify_psw.png"];
+    self.bokeTechImage.image = [UIImage imageNamed:@"boke_tech.png"];
+    self.softwareImage.image = [UIImage imageNamed:@"about_software.png"];
+    self.feedbackImage.image = [UIImage imageNamed:@"feedback.png"];
 }
 
 - (void)didReceiveMemoryWarning

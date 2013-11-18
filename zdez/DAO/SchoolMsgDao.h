@@ -32,4 +32,7 @@
 
 - (void)changeIsReadState:(SchoolMsg *)sMsg;
 
+// 分段加载信息
+- (NSMutableArray *)getByRefreshCount:(int)count;
+
 @end

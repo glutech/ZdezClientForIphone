@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) IBOutlet UILabel *menuItem;
 @property (weak, nonatomic) IBOutlet UIImageView *isUnreadState;
+@property (weak, nonatomic) IBOutlet UIImageView *msgImage;
 
 @end

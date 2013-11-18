@@ -172,7 +172,7 @@
         sqlite3_close(db);
         NSAssert(NO, @"open db failed...");
     } else {
-        NSString *sql = @"SELECT content FROM schoolMsg WHERE schoolMsgId = ?";
+        NSString *sql = @"SELECT title, content, date, remarks FROM schoolMsg WHERE schoolMsgId = ?";
         sqlite3_stmt *statement;
         
         // 预处理过程
@@ -185,8 +185,30 @@
             
             while (sqlite3_step(statement) == SQLITE_ROW) {
                 
-                char *ccontent = (char *)sqlite3_column_text(statement, 0);
+                char *ctitle = (char *)sqlite3_column_text(statement, 0);
+                NSString *title = [[NSString alloc] initWithUTF8String:ctitle];
+                NSString *header = @"<html><body><h3>";
+                
+                header = [header stringByAppendingString:title];
+                header = [header stringByAppendingString:@"</h3>"];
+                header = [header stringByAppendingString:@"<font size=\"2\"><p>发送时间：&nbsp;"];
+                
+                char *cdate = (char *)sqlite3_column_text(statement, 2);
+                NSString *nsDate = [[NSString alloc] initWithUTF8String:cdate];
+                
+                char *cremarks = (char *)sqlite3_column_text(statement, 3);
+                NSString *remarks = [[NSString alloc] initWithUTF8String:cremarks];
+                
+                header = [header stringByAppendingString:nsDate];
+                header = [header stringByAppendingString:@"</p><p>来自："];
+                header = [header stringByAppendingString:remarks];
+                header = [header stringByAppendingString:@"</p></font><hr>"];
+                
+                char *ccontent = (char *)sqlite3_column_text(statement, 1);
                 htmlContent = [[NSString alloc] initWithUTF8String:ccontent];
+                
+                htmlContent = [header stringByAppendingString:htmlContent];
+                htmlContent = [htmlContent stringByAppendingString:@"</body></html>"];
             }
         }
         
@@ -207,7 +229,6 @@
         NSAssert(NO, @"open db failed...");
     } else {
         NSString *sql = @"UPDATE schoolMsg set isRead = 1 WHERE schoolMsgId = ?";
-        //        NSString *sql = @"SELECT content FROM news WHERE newsId = ?";
         sqlite3_stmt *statement;
         
         // 预处理过程
@@ -222,6 +243,62 @@
         
         sqlite3_close(db);
     }
+}
+
+- (NSMutableArray *)getByRefreshCount:(int)count
+{
+    NSString *path = [self applicationDocumentsDirectoryFile];
+    NSMutableArray *data = [[NSMutableArray alloc] init];
+    
+    // 确定查询的开始与结束位置
+    int begin = (count-1) * 20;
+    int end = (count) * 20;
+    
+    if (sqlite3_open([path UTF8String], &db) != SQLITE_OK) {
+        sqlite3_close(db);
+        NSAssert(NO, @"open db failed...");
+    } else {
+        NSString *sql = @"SELECT schoolMsgId, title, date, isRead FROM schoolMsg ORDER BY schoolMsgId DESC LIMIT ?, ?";
+        sqlite3_stmt *statement;
+        
+        // 预处理过程
+        if (sqlite3_prepare_v2(db, [sql UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            
+            sqlite3_bind_int(statement, 1, begin);
+            sqlite3_bind_int(statement, 2, end);
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                
+                int schoolMsgId = (int)sqlite3_column_int(statement, 0);
+                
+                char *ctitle = (char *)sqlite3_column_text(statement, 1);
+                NSString *nsTitle = [[NSString alloc] initWithUTF8String:ctitle];
+                
+                char *cdate = (char *)sqlite3_column_text(statement, 2);
+                NSString *nsDate = [[NSString alloc] initWithUTF8String:cdate];
+                
+                int isRead = (int)sqlite3_column_int(statement, 3);
+                
+                SchoolMsg *msg = [[SchoolMsg alloc] init];
+                msg.schoolMsgId = schoolMsgId;
+                msg.title = nsTitle;
+                msg.date = [dateFormatter dateFromString:nsDate];
+                msg.isRead = isRead;
+                
+                [data addObject:msg];
+            }
+        }
+        
+        sqlite3_finalize(statement);
+        
+        sqlite3_close(db);
+    }
+    
+    return data;
 }
 
 @end

@@ -32,4 +32,7 @@
 
 - (void)changeIsReadState:(ZdezMsg *)zMsg;
 
+// 分段加载信息
+- (NSMutableArray *)getByRefreshCount:(int)count;
+
 @end

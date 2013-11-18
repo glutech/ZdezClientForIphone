@@ -73,3 +73,47 @@
 
 /* Class = "IBUILabel"; text = "www.zdez.cn"; ObjectID = "t45-8b-zFb"; */
 "t45-8b-zFb.text" = "www.zdez.cn";
+
+/* Class = "IBUITableViewSection"; headerTitle = "managePersonalInfo"; ObjectID = "VFD-4C-yFq"; */
+"VFD-4C-yFq.headerTitle" = "个人信息管理";
+
+/* Class = "IBUITableViewSection"; headerTitle = "About"; ObjectID = "9kd-J9-MLv"; */
+"9kd-J9-MLv.headerTitle" = "关于";
+
+/* Class = "IBUILabel"; text = "viewUserInfo"; ObjectID = "Lky-xQ-tVy"; */
+"Lky-xQ-tVy.text" = "查看个人信息";
+
+/* Class = "IBUILabel"; text = "modifyPsw"; ObjectID = "RVD-w5-74C"; */
+"RVD-w5-74C.text" = "修改密码";
+
+/* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "I81-rD-ok4"; */
+"I81-rD-ok4.title" = "设置";
+
+/* Class = "IBUILabel"; text = "bokeTech"; ObjectID = "gUM-6L-jac"; */
+"gUM-6L-jac.text" = "关于博客科技";
+
+/* Class = "IBUILabel"; text = "software"; ObjectID = "BJD-Ug-Xq2"; */
+"BJD-Ug-Xq2.text" = "关于本软件";
+
+/* Class = "IBUIButton"; normalTitle = "Logout"; ObjectID = "mzq-R2-pSL"; */
+"mzq-R2-pSL.normalTitle" = "退出当前帐号";
+
+"X5N-2g-5yM.headerTitle" = "其他";
+
+"VTk-hT-zjr.text" = "意见反馈";
+
+"7OD-J3-Rfu.title" = "个人信息";
+
+"zDV-zH-VWq.headerTitle" = "基本信息";
+
+"1xH-DO-xdz.headerTitle" = "说明";
+
+"eWG-Uf-EAG.text" = "用户名";
+
+"lAV-mf-mUP.text" = "性别";
+
+"m8q-VO-GHW.text" = "学院";
+
+"2Wz-zX-giB.text" = "专业";
+
+"PvI-eo-Zqv.title" = "密码修改";

@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MsgListViewController.h"
 
 @protocol MenuViewControllerDelegate;
 
@@ -15,6 +14,9 @@
 
 @property (nonatomic, weak) id <MenuViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSArray *categoryList;
+- (IBAction)opneZdez:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 
 @end
 

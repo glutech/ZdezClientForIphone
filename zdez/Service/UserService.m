@@ -7,6 +7,7 @@
 //
 
 #import "UserService.h"
+#import "UserDao.h"
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 
@@ -43,6 +44,44 @@
     }
     
     return flag;
+}
+
+- (void)modifyBadge:(int)userId
+{
+    NSString *userIdStr = [NSString stringWithFormat:@"%d", userId];
+    NSString *postURL = [NSString stringWithFormat:@"IosClient_ModifyBadge"];
+    postURL = [HOST_NAME stringByAppendingString:postURL];
+    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:postURL]];
+    
+    [request addPostValue:userIdStr forKey:@"userId"];
+    // 异步处理
+    [request startAsynchronous];
+}
+
+- (User *)getUserInfo
+{
+    UserDao *dao = [[UserDao alloc] init];
+    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+    tempArray = [dao getUserInfo];
+    User *user = [[User alloc] init];
+    user = [tempArray objectAtIndex:0];
+    return user;
+}
+
+- (void)sendFeedbackMsg:(NSString *)feedbackMsg
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    int userId = [userDefaults integerForKey:@"userId"];
+    NSString *userIdStr = [NSString stringWithFormat:@"%d", userId];
+    NSString *postURL = [NSString stringWithFormat:@"AndroidClient_FeedBack"];
+    postURL = [HOST_NAME stringByAppendingString:postURL];
+    
+    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:postURL]];
+    
+    [request addPostValue:userIdStr forKey:@"user_id"];
+    [request addPostValue:feedbackMsg forKey:@"feedback"];
+    
+    [request startAsynchronous];
 }
 
 @end

@@ -7,11 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "User.h"
 
-#define HOST_NAME @"http://192.168.1.110:8080/zdezServer/"
+#define HOST_NAME @"http://192.168.1.106:8080/zdezServer/"
 
 @interface UserService : NSObject
 
 - (BOOL)modifyPassword:(int)userId theOldPassword:(NSString *)oldPsw theNewPassword:(NSString *)newPsw;
+
+- (void)modifyBadge:(int)userId;
+
+- (User *)getUserInfo;
+
+- (void)sendFeedbackMsg:(NSString *)feedbackMsg;
 
 @end
