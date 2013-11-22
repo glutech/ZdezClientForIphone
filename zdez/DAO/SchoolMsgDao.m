@@ -74,7 +74,10 @@
         // 循环插入数据
         for (SchoolMsg *msg in schoolMsgArray) {
             
-            msg.content = [msg.content stringByReplacingOccurrencesOfString:@"img src=\"/zdezServer/" withString:@"img src=\"http:192.168.1.110:8080/zdezServer/"];
+            NSString *imgServerPath = @"img src=\"";
+            imgServerPath = [imgServerPath stringByAppendingString:HOST_NAME];
+            
+            msg.content = [msg.content stringByReplacingOccurrencesOfString:@"img src=\"/zdezServer/" withString:imgServerPath];
             
             NSString *sqlStr = @"INSERT OR REPLACE INTO schoolMsg (schoolMsgId, title, content, date, remarks) VALUES (?,?,?,?,?);";
             sqlite3_stmt *statement;
@@ -86,12 +89,6 @@
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                 
                 [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-                
-                
-//                NSLog(@"title: %@", msg.title);
-//                NSLog(@"content: %@", msg.content);
-//                NSLog(@"date: %@", msg.date);
-//                NSLog(@"remarks: %@", msg.remarks);
                 
                 NSString *nsDate = [dateFormatter stringFromDate:msg.date];
                 
@@ -299,6 +296,31 @@
     }
     
     return data;
+}
+
+- (NSInteger)getUnreadMsgCount
+{
+    NSString *path = [self applicationDocumentsDirectoryFile];
+    NSInteger result = 0;
+    
+    if (sqlite3_open([path UTF8String], &db) != SQLITE_OK) {
+        sqlite3_close(db);
+        NSAssert(NO, @"open db failed...");
+    } else {
+        NSString *sql = @"SELECT COUNT(schoolMsgId) FROM schoolMsg WHERE isRead = 0";
+        sqlite3_stmt *statement;
+        
+        // 预处理过程
+        if (sqlite3_prepare_v2(db, [sql UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                result = sqlite3_column_int(statement, 0);
+            }
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(db);
+    }
+    
+    return result;
 }
 
 @end

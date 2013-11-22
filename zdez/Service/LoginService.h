@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UserService.h"
 
-#define HOST_NAME @"http://192.168.1.106:8080/zdezServer/"
+//#define HOST_NAME @"http://192.168.1.110:8080/zdezServer/"
 
 @interface LoginService : NSObject
 
@@ -17,5 +18,8 @@
 - (BOOL)isLogined;
 
 - (BOOL)logOut;
+
+// 用户修改密码之后，删除user表中的数据
+- (void)reLogin;
 
 @end

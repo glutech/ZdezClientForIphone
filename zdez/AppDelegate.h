@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "SettingsViewController.h"
+#import "Reachability.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
+{
+    Reachability *hostReach;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 

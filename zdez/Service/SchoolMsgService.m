@@ -75,9 +75,9 @@
             }
             
         } else {
-            NSLog(@"can't get data... error: %@", error);
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接超时，请稍后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-            [alert show];
+//            NSLog(@"can't get data... error: %@", error);
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接超时，请稍后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+//            [alert show];
         }
     } else {
         // 没有用户id了，返回登录页面
@@ -137,6 +137,12 @@
 {
     SchoolMsgDao *dao = [[SchoolMsgDao alloc] init];
     return [dao getByRefreshCount:count];
+}
+
+- (NSInteger)getUnreadMsgCount
+{
+    SchoolMsgDao *dao = [[SchoolMsgDao alloc] init];
+    return [dao getUnreadMsgCount];
 }
 
 @end

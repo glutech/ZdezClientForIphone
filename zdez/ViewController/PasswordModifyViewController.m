@@ -8,6 +8,7 @@
 
 #import "PasswordModifyViewController.h"
 #import "UserService.h"
+#import "LoginService.h"
 
 @interface PasswordModifyViewController ()
 
@@ -59,7 +60,7 @@
                 UserService *uService = [[UserService alloc] init];
                 if ([uService modifyPassword:userId theOldPassword:oldPsw.text theNewPassword:nPsw.text]) {
                     // 修改成功
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"密码修改成功" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"密码修改成功，请重新登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
                     [alert show];
                 } else {
                     // 原密码不正确
@@ -82,7 +83,20 @@
     NSString *str = [NSString stringWithFormat:@"%@", [alertView buttonTitleAtIndex:buttonIndex]];
     if ([str isEqualToString:@"确定"]){
         
-        [self.navigationController popViewControllerAnimated:YES];
+        LoginService *service = [[LoginService alloc] init];
+        [service reLogin];
+        
+        
+        // 清除NSUserDefaults
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults removeObjectForKey:@"userId"];
+        [userDefaults removeObjectForKey:@"username"];
+        
+        [userDefaults synchronize];
+        
+        [self performSegueWithIdentifier:@"relogin" sender:self];
+        
+//        [self.navigationController popViewControllerAnimated:YES];
         
     }
 }

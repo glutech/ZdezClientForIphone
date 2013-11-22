@@ -10,6 +10,7 @@
 
 @interface SoftwareInfoViewController : UITableViewController
 @property (weak, nonatomic) IBOutlet UIImageView *iconImage;
-@property (weak, nonatomic) IBOutlet UIImageView *rightsImage;
+@property (weak, nonatomic) IBOutlet UIImageView *rightsImage1136;
+@property (weak, nonatomic) IBOutlet UIImageView *rightsImage480;
 
 @end

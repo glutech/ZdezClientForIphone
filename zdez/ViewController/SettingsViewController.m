@@ -8,6 +8,9 @@
 
 #import "SettingsViewController.h"
 #import "LoginService.h"
+#import "ASIFormDataRequest.h"
+#import "ASIHTTPRequest.h"
+#import "ProgressHUD.h"
 
 @interface SettingsViewController ()
 
@@ -33,6 +36,7 @@
     self.bokeTechImage.image = [UIImage imageNamed:@"boke_tech.png"];
     self.softwareImage.image = [UIImage imageNamed:@"about_software.png"];
     self.feedbackImage.image = [UIImage imageNamed:@"feedback.png"];
+    self.updateImage.image = [UIImage imageNamed:@"update.png"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,32 +53,105 @@
 - (IBAction)didLogOut:(id)sender
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"确定要退出？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alert.tag = 1;
     [alert show];
     return;
+}
+
+- (IBAction)checkUpdate:(id)sender {
+    
+    NSString *appAddr = @"http://itunes.apple.com/lookup?id=";
+    NSString *appId = [[NSBundle mainBundle] bundleIdentifier];
+    appAddr = [appAddr stringByAppendingString:appId];
+    
+    NSURL *url = [NSURL URLWithString:appAddr];
+    ASIHTTPRequest *versionRequest = [ASIFormDataRequest requestWithURL:url];
+    [versionRequest setRequestMethod:@"GET"];
+    [versionRequest setDelegate:self];
+    [versionRequest setTimeOutSeconds:150];
+    [versionRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+    [ProgressHUD show:@"请等待..."];
+    [versionRequest startAsynchronous];
+   
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *str = [NSString stringWithFormat:@"%@", [alertView buttonTitleAtIndex:buttonIndex]];
     if ([str isEqualToString:@"确定"]){
-        LoginService *service = [[LoginService alloc] init];
-        if ([service logOut]) {
-            
-            // 清除NSUserDefaults
-            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            [userDefaults removeObjectForKey:@"userId"];
-            [userDefaults removeObjectForKey:@"username"];
-            
-            [userDefaults synchronize];
-            
-            [self performSegueWithIdentifier:@"logout" sender:self];
-        } else {
-            UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络错误" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-            [alert1 show];
-            return;
+        if (alertView.tag == 1) {
+            LoginService *service = [[LoginService alloc] init];
+            if ([service logOut]) {
+                
+                // 清除NSUserDefaults
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults removeObjectForKey:@"userId"];
+                [userDefaults removeObjectForKey:@"username"];
+                
+                [userDefaults synchronize];
+                
+                [self performSegueWithIdentifier:@"logout" sender:self];
+            } else {
+                UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络错误" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                [alert1 show];
+                return;
+            }
+        } else if (alertView.tag == 2) {
+            NSString *iTunesLink = @"itms-apps://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftwareUpdate?id=";
+            NSString *appId = [[NSBundle mainBundle] bundleIdentifier];
+            iTunesLink = [iTunesLink stringByAppendingString:appId];
+            iTunesLink = [iTunesLink stringByAppendingString:@"&mt=8"];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
         }
  
     }
+}
+
+#pragma mark - ASIHTTPRequest
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    [ProgressHUD dismiss];
+    NSString *version = @"";
+    
+    //Response string of our REST call
+    NSData *jsonResponseData = [request responseData];
+    
+    NSError *error;
+    
+    NSDictionary *loginAuthenticationResponse = [NSJSONSerialization JSONObjectWithData:jsonResponseData options:NSJSONReadingAllowFragments error:&error];
+    
+    NSArray *configData = [loginAuthenticationResponse valueForKey:@"results"];
+    
+    for (id config in configData)
+    {
+        version = [config valueForKey:@"version"];
+    }
+    
+    // get installed client version
+    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+    NSString *versionNum = [infoDict objectForKey:@"CFBundleVersion"];
+    
+    //Check your version with the version in app store
+    if (![version isEqualToString:@""]) {
+        if (![version isEqualToString:versionNum])
+        {
+            UIAlertView *createUserResponseAlert = [[UIAlertView alloc] initWithTitle:@"New Version!!" message: @"A new version of app is available to download" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Download", nil];
+            createUserResponseAlert.tag = 2;
+            [createUserResponseAlert show];
+        }
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"已是最新版本！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"网络错误，请稍后重试！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+    [alert show];
+    return;
 }
 
 @end

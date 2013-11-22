@@ -46,17 +46,17 @@
     return flag;
 }
 
-- (void)modifyBadge:(int)userId
-{
-    NSString *userIdStr = [NSString stringWithFormat:@"%d", userId];
-    NSString *postURL = [NSString stringWithFormat:@"IosClient_ModifyBadge"];
-    postURL = [HOST_NAME stringByAppendingString:postURL];
-    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:postURL]];
-    
-    [request addPostValue:userIdStr forKey:@"userId"];
-    // 异步处理
-    [request startAsynchronous];
-}
+//- (void)modifyBadge:(int)userId
+//{
+//    NSString *userIdStr = [NSString stringWithFormat:@"%d", userId];
+//    NSString *postURL = [NSString stringWithFormat:@"IosClient_ModifyBadge"];
+//    postURL = [HOST_NAME stringByAppendingString:postURL];
+//    ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:[NSURL URLWithString:postURL]];
+//    
+//    [request addPostValue:userIdStr forKey:@"userId"];
+//    // 异步处理
+//    [request startAsynchronous];
+//}
 
 - (User *)getUserInfo
 {

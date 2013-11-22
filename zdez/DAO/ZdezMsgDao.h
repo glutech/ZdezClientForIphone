@@ -10,6 +10,9 @@
 #import <sqlite3.h>
 #import "ZdezMsg.h"
 
+// for HOST_NAME
+#import "UserService.h"
+
 #define DBFILE_NAME @"zdez.sqlite3"
 
 @interface ZdezMsgDao : NSObject
@@ -34,5 +37,7 @@
 
 // 分段加载信息
 - (NSMutableArray *)getByRefreshCount:(int)count;
+
+- (NSInteger)getUnreadMsgCount;
 
 @end

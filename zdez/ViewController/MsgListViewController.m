@@ -26,6 +26,7 @@
 #import "UserService.h"
 #import "ASIHTTPRequest.h"
 #import "ParseJson.h"
+#import "Reachability.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -45,18 +46,27 @@
     int _newsRefreshCount;
     int _sMsgRefreshCount;
     int _zMsgRefreshCount;
+    
+    BOOL newsUnreadStatus;
+    BOOL schoolMsgUnreadStatus;
+    BOOL zdezMsgUnreadStatus;
+    
+    NSInteger newsUnreadCount;
+    NSInteger schoolMsgUnreadCount;
+    NSInteger zdezMsgUnreadCount;
 }
 
 @property (nonatomic, weak) IBOutlet UINavigationItem *navigationTitle;
 @property (nonatomic, strong) NSArray *msgCategories;
 @property (nonatomic, assign) NSInteger selectedCategory;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic) Reachability *hostReach;
 
 @end
 
 @implementation MsgListViewController
 
-@synthesize titleLabel;
+@synthesize titleLabel, delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -71,8 +81,19 @@
 {
     [super viewDidLoad];
     
-    //默认首先进入校园通知
-    self.selectedCategory = 1;
+    // 开启网络状况的监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    //    self.hostReach = [[Reachability reachabilityWithHostName:@"www.apple.com"] init];
+    self.hostReach = [Reachability reachabilityWithHostName:@"www.apple.com"];
+    [self.hostReach startNotifier];
+//    [self updateInterfaceWithReachability:self.hostReach];
+    
+    newsUnreadCount = 0;
+    schoolMsgUnreadCount = 0;
+    zdezMsgUnreadCount = 0;
+    
+    //默认首先进入资讯频道
+    self.selectedCategory = 0;
     
     // 下拉刷新
     _header = [[MJRefreshHeaderView alloc] init];
@@ -84,7 +105,7 @@
     _footer.delegate = self;
     _footer.scrollView = self.tableView;
     
-    // 假数据
+    // 数据
     _newsList = [NSMutableArray array];
     _schoolMsgList = [NSMutableArray array];
     _zdezMsgList = [NSMutableArray array];
@@ -97,6 +118,7 @@
     SchoolMsgService *sMsgService = [[SchoolMsgService alloc] init];
     ZdezMsgService *zMsgService = [[ZdezMsgService alloc] init];
     
+    // view初始化时就进行刷新，并获取数据库中最新的20条数据
     [self refreshViewBeginRefreshing:_header];
     if (self.selectedCategory == 0) {
         _newsList = [newsService getByRefreshCount:_newsRefreshCount];
@@ -107,19 +129,21 @@
     }
     
     // 定义侧滑菜单选项
-    self.msgCategories = @[@"新闻资讯", @"校园通知", @"找得着"];
+    self.msgCategories = @[@"资讯频道", @"校园频道", @"找得着"];
     self.navigationTitle.title = self.msgCategories[self.selectedCategory];
-//    [[UIView appearance] setBackgroundColor:UIColorFromRGB(0xF86E23)];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"nv_bg.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [(MenuViewController *)self.slidingViewController.underLeftViewController setDelegate:self];
+    self.delegate = (MenuViewController *)self.slidingViewController.underLeftViewController;
 }
 
+// 用户点击菜单栏中的某一项时
 - (void)menuViewControllerDidFinishWithCategoryId:(NSInteger)categoryId
 {
+    
     self.selectedCategory = categoryId;
     self.navigationTitle.title = self.msgCategories[self.selectedCategory];
     
@@ -131,7 +155,10 @@
     SchoolMsgService *sMsgService = [[SchoolMsgService alloc] init];
     ZdezMsgService *zMsgService = [[ZdezMsgService alloc] init];
     
+    // 从服务器获取最新信息
     [self refreshViewBeginRefreshing:_header];
+    
+    // 并取得数据库中的最新的20条信息进行显示
     if (self.selectedCategory == 0) {
         _newsList = [newsService getByRefreshCount:1];
     } else if (self.selectedCategory == 1) {
@@ -185,12 +212,6 @@
     return count;
 }
 
-//获取消息上的缩略图，此处也应由网络图片设定
-- (UIImage *)imageForMessage:(int)msgId
-{
-    return [UIImage imageNamed:@"test.jpg"];
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -207,9 +228,12 @@
         nMsg = _newsList[indexPath.row];
         
         cell.titleLabel.text = nMsg.title;
+        // 如果信息未读
         if (nMsg.isRead == 0) {
+            // 设置标题颜色为橘黄色
             cell.titleLabel.textColor = [UIColor orangeColor];
         } else {
+            // 如果信息已读，则标题为黑色
             cell.titleLabel.textColor = [UIColor blackColor];
         }
         NSString *detaStr = [dFormatter stringFromDate:nMsg.date];
@@ -265,11 +289,11 @@
                 badge--;
                 [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
             }
+            
+            // 更改被点击信息条目的已读标志位，用于改变标题颜色
+            n.isRead = 1;
+            _newsList[indexPath.row] = n;
         }
-        
-        // 更改被点击信息条目的已读标志位，用于改变标题颜色
-        n.isRead = 1;
-        _newsList[indexPath.row] = n;
         
     } else if (self.selectedCategory == 1) {
         SchoolMsg *sMsg = _schoolMsgList[indexPath.row];
@@ -285,11 +309,10 @@
                 badge--;
                 [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
             }
+            // 更改被点击信息条目的已读标志位，用于改变标题颜色
+            sMsg.isRead = 1;
+            _schoolMsgList[indexPath.row] = sMsg;
         }
-        
-        // 更改被点击信息条目的已读标志位，用于改变标题颜色
-        sMsg.isRead = 1;
-        _schoolMsgList[indexPath.row] = sMsg;
         
     } else if (self.selectedCategory == 2) {
         ZdezMsg *zMsg = _zdezMsgList[indexPath.row];
@@ -305,16 +328,12 @@
                 badge--;
                 [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
             }
+            // 更改被点击信息条目的已读标志位，用于改变标题颜色
+            zMsg.isRead = 1;
+            _zdezMsgList[indexPath.row] = zMsg;
         }
         
-        // 更改被点击信息条目的已读标志位，用于改变标题颜色
-        zMsg.isRead = 1;
-        _zdezMsgList[indexPath.row] = zMsg;
     }
-    
-    // 告诉服务器信息已读
-    UserService *userService = [[UserService alloc] init];
-    [userService modifyBadge:[[NSUserDefaults standardUserDefaults] integerForKey:@"userId"]];
     
     [self performSegueWithIdentifier:@"toWebContent" sender:self];
 }
@@ -322,6 +341,11 @@
 #pragma mark 代理方法-进入刷新状态就会执行
 - (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
 {
+    // 开始刷新的时候把所有信息的未读数和状态均初始化
+    newsUnreadCount = 0;
+    schoolMsgUnreadCount = 0;
+    zdezMsgUnreadCount = 0;
+    
     if (_header == refreshView) {
         // 下拉
         
@@ -369,7 +393,9 @@
         }
     }
     
+    // 拿到数据后，刷新列表
     [NSTimer scheduledTimerWithTimeInterval:1 target:self.tableView selector:@selector(reloadData) userInfo:nil repeats:NO];
+    
 }
 
 //从标题列表跳转到web content的传值
@@ -404,6 +430,31 @@
 
 - (void)webContentControllerDidDone:(WebContentController *)controller
 {
+    if (self.selectedCategory == 0) {
+        NewsService *nService = [[NewsService alloc] init];
+        if ([nService getUnreadMsgCount] > 0) {
+            newsUnreadStatus = true;
+        } else {
+            newsUnreadStatus = false;
+        }
+    } else if (self.selectedCategory == 1) {
+        SchoolMsgService *sService = [[SchoolMsgService alloc] init];
+        if ([sService getUnreadMsgCount] > 0) {
+            schoolMsgUnreadStatus = true;
+        } else {
+            schoolMsgUnreadStatus = false;
+        }
+    } else if (self.selectedCategory == 2) {
+        ZdezMsgService *zService = [[ZdezMsgService alloc] init];
+        if ([zService getUnreadMsgCount] > 0) {
+            zdezMsgUnreadStatus = true;
+        } else {
+            zdezMsgUnreadStatus = false;
+        }
+    }
+    
+    [self.delegate msgListViewControllerChangeMenuUnreadStatus:newsUnreadStatus isSchoolMsgUnRead:schoolMsgUnreadStatus isZdezMsgUnread:zdezMsgUnreadStatus];
+    
     [self.tableView deselectRowAtIndexPath:_selectRow animated:YES];
     [self.tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -422,6 +473,7 @@
 // 处理获取到的信息
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
+    
     NSMutableArray *arrayDesc = [[NSMutableArray alloc] init];
     NSMutableArray *array = [[NSMutableArray alloc] init];
     ParseJson *pj = [[ParseJson alloc] init];
@@ -440,6 +492,13 @@
         // 每次下拉刷新都是加载最新的20条
         _newsRefreshCount = 1;
         _newsList = [newsService getByRefreshCount:_newsRefreshCount];
+        
+        if ([newsService getUnreadMsgCount] > 0) {
+            newsUnreadStatus = true;
+        } else {
+            newsUnreadStatus = false;
+        }
+        
     } else if (self.selectedCategory == 1) {
         array = [pj parseSchoolMsg:[request responseData]];
         int count = [array count];
@@ -455,6 +514,13 @@
         // 每次下拉刷新都是加载最新的20条信息
         _sMsgRefreshCount = 1;
         _schoolMsgList = [sMsgService getByRefreshCount:_sMsgRefreshCount];
+        
+        if ([sMsgService getUnreadMsgCount] > 0) {
+            schoolMsgUnreadStatus = true;
+        } else {
+            schoolMsgUnreadStatus = false;
+        }
+        
     } else if (self.selectedCategory == 2) {
         array = [pj parseZdezMsg:[request responseData]];
         int count = [array count];
@@ -470,15 +536,74 @@
         // 每次下拉刷新都是加载最新的20条信息
         _zMsgRefreshCount = 1;
         _zdezMsgList = [zMsgService getByRefreshCount:_zMsgRefreshCount];
+        
+        if ([zMsgService getUnreadMsgCount] > 0) {
+            zdezMsgUnreadStatus = true;
+        } else {
+            zdezMsgUnreadStatus = false;
+        }
+        
     }
+    
+    // 更改角标
+    NSInteger badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
+    badge = badge + [arrayDesc count];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
+    
+    // 告诉menuView要根据三种信息的未读状态更新menu项了
+    [self.delegate msgListViewControllerChangeMenuUnreadStatus:newsUnreadStatus isSchoolMsgUnRead:schoolMsgUnreadStatus isZdezMsgUnread:zdezMsgUnreadStatus];
     
 }
 
+// 请求失败时
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"连接超时，请稍后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-    [alert show];
-    return;
+    
+    if (self.selectedCategory == 0) {
+        NewsService *nService = [[NewsService alloc] init];
+        if ([nService getUnreadMsgCount] > 0) {
+            newsUnreadStatus = true;
+        } else {
+            newsUnreadStatus = false;
+        }
+    } else if (self.selectedCategory == 1) {
+        SchoolMsgService *sService = [[SchoolMsgService alloc] init];
+        if ([sService getUnreadMsgCount] > 0) {
+            schoolMsgUnreadStatus = true;
+        } else {
+            schoolMsgUnreadStatus = false;
+        }
+    } else if (self.selectedCategory == 2) {
+        ZdezMsgService *zService = [[ZdezMsgService alloc] init];
+        if ([zService getUnreadMsgCount] > 0) {
+            zdezMsgUnreadStatus = true;
+        } else {
+            zdezMsgUnreadStatus = false;
+        }
+    }
+    
+    [self.delegate msgListViewControllerChangeMenuUnreadStatus:newsUnreadStatus isSchoolMsgUnRead:schoolMsgUnreadStatus isZdezMsgUnread:zdezMsgUnreadStatus];
+}
+
+// 连接改变
+- (void) reachabilityChanged:(NSNotification *)note
+{
+    Reachability *curReach = [note object];
+    NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
+    [self updateInterfaceWithReachability:curReach];
+}
+
+// 处理连接改变后的情况
+- (void)updateInterfaceWithReachability:(Reachability *)curReach
+{
+    // 对连接改变做出响应的处理动作
+    NetworkStatus status = [curReach currentReachabilityStatus];
+    
+    if (status == NotReachable) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"找得着" message:@"当前无网络连接" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
 }
 
 @end

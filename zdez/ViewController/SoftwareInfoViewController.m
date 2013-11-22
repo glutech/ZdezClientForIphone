@@ -33,7 +33,16 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.iconImage.image = [UIImage imageNamed:@"icon-120.png"];
-    self.rightsImage.image = [UIImage imageNamed:@"AllRightsReserved.png"];
+    
+    CGRect rect_screen = [[UIScreen mainScreen] bounds];
+    CGSize size_screen = rect_screen.size;
+    
+    if (size_screen.height <= 480.0f) {
+        self.rightsImage480.image = [UIImage imageNamed:@"AllRightsReserved.png"];
+    } else {
+        self.rightsImage1136.image = [UIImage imageNamed:@"AllRightsReserved.png"];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning

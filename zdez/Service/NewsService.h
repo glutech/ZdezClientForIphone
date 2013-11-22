@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "News.h"
 #import "ASIHTTPRequest.h"
+#import "UserService.h"
 
-#define HOST_NAME @"http://192.168.1.106:8080/zdezServer/"
+//#define HOST_NAME @"http://192.168.1.103:8080/zdezServer/"
 
 @interface NewsService : NSObject
 
@@ -21,5 +22,6 @@
 - (void)sendAck:(NSMutableArray *)ewsList;
 - (void)changeIsReadState:(News *)newsMsg;
 - (NSMutableArray *)getByRefreshCount:(int)count;
+- (NSInteger)getUnreadMsgCount;
 
 @end

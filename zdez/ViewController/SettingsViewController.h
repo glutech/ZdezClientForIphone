@@ -24,6 +24,8 @@
 
 - (IBAction)didLogOut:(id)sender;
 
+- (IBAction)checkUpdate:(id)sender;
+
 @property (weak, nonatomic) IBOutlet UIImageView *viewUserInfoImage;
 
 @property (weak, nonatomic) IBOutlet UIImageView *modifyPswImage;
@@ -33,5 +35,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *softwareImage;
 
 @property (weak, nonatomic) IBOutlet UIImageView *feedbackImage;
+@property (weak, nonatomic) IBOutlet UIImageView *updateImage;
 
 @end

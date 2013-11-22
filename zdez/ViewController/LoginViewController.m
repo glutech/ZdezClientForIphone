@@ -30,6 +30,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.zdezIcon.image = [UIImage imageNamed:@"icon_login.png"];
 }
 
 - (void)didReceiveMemoryWarning

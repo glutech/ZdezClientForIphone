@@ -16,7 +16,7 @@
 
 @implementation MenuViewController
 
-@synthesize categoryList, delegate;
+@synthesize categoryList, delegate, isNewsUnreadStatus, isSchoolMsgUnreadStatus, isZdezMsgUnreadStatus, menuTable;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,10 +31,13 @@
 {
     [super viewDidLoad];
     
+    NSLog(@"view did load........");
+    
     [self.slidingViewController setAnchorRightRevealAmount:190.0f];
     self.slidingViewController.underLeftWidthLayout = ECFullWidth;
     
     self.categoryList = @[];
+    
     self.usernameLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"name"];
 }
 
@@ -54,10 +57,25 @@
     cell.menuItem.text = menuName;
     if (indexPath.row == 0) {
         cell.msgImage.image = [UIImage imageNamed:@"msg_type_0.png"];
+        if (isNewsUnreadStatus) {
+            cell.isUnreadState.image = [UIImage imageNamed:@"unreadStatus.png"];
+        } else {
+            cell.isUnreadState.image = [UIImage imageNamed:@"noUnreadMsg.png"];
+        }
     } else if (indexPath.row == 1) {
         cell.msgImage.image = [UIImage imageNamed:@"msg_type_1.png"];
+        if (isSchoolMsgUnreadStatus) {
+            cell.isUnreadState.image = [UIImage imageNamed:@"unreadStatus.png"];
+        } else {
+            cell.isUnreadState.image = [UIImage imageNamed:@"noUnreadMsg.png"];
+        }
     } else if (indexPath.row == 2) {
         cell.msgImage.image = [UIImage imageNamed:@"msg_type_2.png"];
+        if (isZdezMsgUnreadStatus) {
+            cell.isUnreadState.image = [UIImage imageNamed:@"unreadStatus.png"];
+        } else {
+            cell.isUnreadState.image = [UIImage imageNamed:@"noUnreadMsg.png"];
+        }
     }
     
     return cell;
@@ -74,6 +92,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)msgListViewControllerChangeMenuUnreadStatus:(BOOL)newsUnreadStatus isSchoolMsgUnRead:(BOOL)schoolMsgUnreadStatus isZdezMsgUnread:(BOOL)zdezMsgUnReadStatus
+{
+    self.isNewsUnreadStatus = newsUnreadStatus;
+    self.isSchoolMsgUnreadStatus = schoolMsgUnreadStatus;
+    self.isZdezMsgUnreadStatus = zdezMsgUnReadStatus;
+    
+    [self.menuTable reloadData];
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
@@ -81,5 +108,9 @@
 
 - (IBAction)opneZdez:(id)sender {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.zdez.cn"]];
+}
+
+- (IBAction)openZdezComCn:(id)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.zdez.com.cn"]];
 }
 @end

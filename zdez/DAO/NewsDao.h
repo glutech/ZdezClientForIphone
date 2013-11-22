@@ -10,6 +10,9 @@
 #import <sqlite3.h>
 #import "News.h"
 
+// for HOST_NAME
+#import "UserService.h"
+
 #define DBFILE_NAME @"zdez.sqlite3"
 
 @interface NewsDao : NSObject
@@ -36,5 +39,7 @@
 
 // 分段加载信息
 - (NSMutableArray *)getByRefreshCount:(int)count;
+
+- (NSInteger)getUnreadMsgCount;
 
 @end

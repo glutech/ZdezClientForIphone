@@ -7,6 +7,7 @@
 //
 
 #import "WebContentController.h"
+#import "UIImageView+WebCache.h"
 
 @interface WebContentController ()
 
@@ -41,17 +42,76 @@
         webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 64, 320, 510)];
     }
     
-	// Do any additional setup after loading the view.
-    
     webView.delegate = self;
     
     // 加载html代码
     [webView loadHTMLString:content baseURL:nil];
     
-//    NSLog(@"content: %@", content);
-    
-    
     [self.view addSubview:webView];
+    
+    [self addTapOnWebView];
+}
+
+-(void)addTapOnWebView
+{
+    UITapGestureRecognizer* singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+    [webView addGestureRecognizer:singleTap];
+    singleTap.delegate = self;
+    singleTap.cancelsTouchesInView = NO;
+}
+
+#pragma mark- TapGestureRecognizer
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
+-(void)handleSingleTap:(UITapGestureRecognizer *)sender
+{
+    CGPoint pt = [sender locationInView:webView];
+    NSString *imgURL = [NSString stringWithFormat:@"document.elementFromPoint(%f, %f).src", pt.x, pt.y];
+    NSString *urlToSave = [webView stringByEvaluatingJavaScriptFromString:imgURL];
+    NSLog(@"image url=%@", urlToSave);
+    if (urlToSave.length > 0) {
+        [self showImageURL:urlToSave point:pt];
+    }
+}
+
+//呈现图片
+-(void)showImageURL:(NSString *)url point:(CGPoint)point
+{
+//    UIImageView *showView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 470)];
+//    showView.center = point;
+//    [UIView animateWithDuration:0.5f animations:^{
+//        CGPoint newPoint = self.view.center;
+//        newPoint.y += 20;
+//        showView.center = newPoint;
+//    }];
+//    
+//    showView.backgroundColor = [UIColor blackColor];
+//    showView.alpha = 0.9;
+//    showView.userInteractionEnabled = YES;
+//    [self.view addSubview:showView];
+//    [showView setImageWithURL:[NSURL URLWithString:url]];
+//    
+//    UITapGestureRecognizer* singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleViewTap:)];
+//    [showView addGestureRecognizer:singleTap];
+//    
+//    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+}
+
+
+//移除图片查看视图
+-(void)handleSingleViewTap:(UITapGestureRecognizer *)sender
+{
+    for (id obj in self.view.subviews) {
+        if ([obj isKindOfClass:[UIImageView class]]) {
+            [obj removeFromSuperview];
+        }
+    }
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,15 +146,11 @@
      @"var script = document.createElement('script');"
      "script.type = 'text/javascript';"
      "script.text = \"function ResizeImages() { "
-     "var myimg,oldwidth;"
+     "var myimg,oldwidth, newheight;"
      "var maxwidth=260;" //缩放系数
      "for(i=0;i <document.images.length;i++){"
      "myimg = document.images[i];"
-     "if(myimg.width > maxwidth){"
-     "oldwidth = myimg.width;"
-     "myimg.width = maxwidth;"
-     "myimg.height = myimg.height * (maxwidth/oldwidth);"
-     "}"
+     "myimg.setAttribute('style','max-width:260px;height:auto')"
      "}"
      "}\";"
      "document.getElementsByTagName('head')[0].appendChild(script);"];

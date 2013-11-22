@@ -10,8 +10,18 @@
 #import "WebContentController.h"
 #import "SettingsViewController.h"
 
+@protocol MsgListViewControllerDelegate;
+
 @interface MsgListViewController : UIViewController <WebContentControllerDelegate, SettingsViewControllerDelegate>
 
+@property (nonatomic, weak) id <MsgListViewControllerDelegate> delegate;
+
 @property (strong, nonatomic) UILabel *titleLabel;
+
+@end
+
+@protocol MsgListViewControllerDelegate
+
+- (void)msgListViewControllerChangeMenuUnreadStatus:(BOOL)newsUnreadStatus isSchoolMsgUnRead:(BOOL)schoolMsgUnreadStatus isZdezMsgUnread:(BOOL)zdezMsgUnReadStatus;
 
 @end

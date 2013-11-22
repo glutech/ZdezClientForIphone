@@ -88,6 +88,12 @@ extern NSString* deviceid;
     return flag;
 }
 
+- (void)reLogin
+{
+    UserDao *dao = [[UserDao alloc] init];
+    [dao logOut];
+}
+
 - (BOOL)noNotificationAnyMore
 {
     BOOL flag = false;
