@@ -65,7 +65,9 @@
     CGFloat contentHeight = _scrollView.contentSize.height;
     // 表格的高度
     CGFloat scrollHeight = _scrollView.frame.size.height;
+    
     CGFloat y = MAX(contentHeight, scrollHeight);
+    
     // 设置边框
     self.frame = CGRectMake(0, y, _scrollView.frame.size.width, kViewHeight);
     

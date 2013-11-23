@@ -42,8 +42,6 @@
         NSAssert(NO, @"open db failed...");
     } else {
         
-        NSLog(@"creating table...");
-        
         char *err;
         
         NSString *createSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS zdezMsg (zdezMsgId INTEGER PRIMARY KEY , title String, content String, date Date, isRead INTEGER DEFAULT 0);"];
@@ -51,10 +49,7 @@
         if (sqlite3_exec(db, [createSQL UTF8String], NULL, NULL, &err) != SQLITE_OK) {
             sqlite3_close(db);
             NSAssert1(NO, @"create table failed...,%s", err);
-        } else {
-            NSLog(@"create table success!!");
         }
-        
         sqlite3_close(db);
     }
 }
@@ -83,8 +78,6 @@
             sqlite3_stmt *statement;
             
             if (sqlite3_prepare_v2(db, [sqlStr UTF8String], -1, &statement, nil) == SQLITE_OK) {
-                
-                NSLog(@"inserting..");
                 
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                 
@@ -242,20 +235,20 @@
     
     // 确定查询的开始与结束位置
     int begin = (count-1) * 20;
-    int end = (count) * 20;
+//    int end = (count) * 20;
     
     if (sqlite3_open([path UTF8String], &db) != SQLITE_OK) {
         sqlite3_close(db);
         NSAssert(NO, @"open db failed...");
     } else {
-        NSString *sql = @"SELECT zdezMsgId, title, date, isRead FROM zdezMsg ORDER BY zdezMsgId DESC LIMIT ?, ?";
+        NSString *sql = @"SELECT zdezMsgId, title, date, isRead FROM zdezMsg ORDER BY zdezMsgId DESC LIMIT ?, 20";
         sqlite3_stmt *statement;
         
         // 预处理过程
         if (sqlite3_prepare_v2(db, [sql UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             
             sqlite3_bind_int(statement, 1, begin);
-            sqlite3_bind_int(statement, 2, end);
+//            sqlite3_bind_int(statement, 2, end);
             
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             

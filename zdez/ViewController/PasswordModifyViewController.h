@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 //@interface PasswordModifyViewController : UIViewController <UIAlertViewDelegate>
-@interface PasswordModifyViewController : UIViewController
+@interface PasswordModifyViewController : UITableViewController
 
 @property (weak, nonatomic) IBOutlet UITextField *oldPsw;
 

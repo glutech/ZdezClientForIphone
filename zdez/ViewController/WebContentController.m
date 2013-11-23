@@ -72,7 +72,7 @@
     CGPoint pt = [sender locationInView:webView];
     NSString *imgURL = [NSString stringWithFormat:@"document.elementFromPoint(%f, %f).src", pt.x, pt.y];
     NSString *urlToSave = [webView stringByEvaluatingJavaScriptFromString:imgURL];
-    NSLog(@"image url=%@", urlToSave);
+//    NSLog(@"image url=%@", urlToSave);
     if (urlToSave.length > 0) {
         [self showImageURL:urlToSave point:pt];
     }

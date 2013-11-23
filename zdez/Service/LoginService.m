@@ -12,6 +12,9 @@
 #import "ParseJson.h"
 #import "User.h"
 #import "UserDao.h"
+#import "NewsService.h"
+#import "SchoolMsgService.h"
+#import "ZdezMsgService.h"
 
 @implementation LoginService
 
@@ -50,6 +53,13 @@ extern NSString* deviceid;
             [userDefaults setObject:user.name forKey:@"name"];
             // 保存到磁盘上
             [userDefaults synchronize];
+            
+            // 修改badge
+            NSInteger badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
+            badge += [[[NewsService alloc] init] getUnreadMsgCount];
+            badge += [[[SchoolMsgService alloc] init] getUnreadMsgCount];
+            badge += [[[ZdezMsgService alloc] init] getUnreadMsgCount];
+            [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
             
             result = 1;
         } else {

@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "User.h"
 
-#define HOST_NAME @"http://192.168.1.103:8080/zdezServer/"
-//#define HOST_NAME @"http://112.117.223.20:9080/zdezServer/"
+//#define HOST_NAME @"http://192.168.1.103:8080/zdezServer/"
+#define HOST_NAME @"http://www.zdez.com.cn:9080/zdezServer/"
 //#define HOST_NAME @"http://192.168.199.139:8080/zdezServer/"
 
 @interface UserService : NSObject

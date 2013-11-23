@@ -13,6 +13,9 @@
 #import "ProgressHUD.h"
 
 @interface SettingsViewController ()
+{
+    NSString *updateAddress;
+}
 
 @end
 
@@ -61,8 +64,7 @@
 - (IBAction)checkUpdate:(id)sender {
     
     NSString *appAddr = @"http://itunes.apple.com/lookup?id=";
-    NSString *appId = [[NSBundle mainBundle] bundleIdentifier];
-    appAddr = [appAddr stringByAppendingString:appId];
+    appAddr = [appAddr stringByAppendingString:@"764327939"];
     
     NSURL *url = [NSURL URLWithString:appAddr];
     ASIHTTPRequest *versionRequest = [ASIFormDataRequest requestWithURL:url];
@@ -90,6 +92,9 @@
                 
                 [userDefaults synchronize];
                 
+                // 清除badge
+                [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+                
                 [self performSegueWithIdentifier:@"logout" sender:self];
             } else {
                 UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络错误" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
@@ -97,11 +102,11 @@
                 return;
             }
         } else if (alertView.tag == 2) {
-            NSString *iTunesLink = @"itms-apps://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftwareUpdate?id=";
-            NSString *appId = [[NSBundle mainBundle] bundleIdentifier];
-            iTunesLink = [iTunesLink stringByAppendingString:appId];
-            iTunesLink = [iTunesLink stringByAppendingString:@"&mt=8"];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+//            NSString *iTunesLink = @"itms-apps://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftwareUpdate?id=";
+//            NSString *appId = [[NSBundle mainBundle] bundleIdentifier];
+//            iTunesLink = [iTunesLink stringByAppendingString:appId];
+//            iTunesLink = [iTunesLink stringByAppendingString:@"&mt=8"];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:updateAddress]];
         }
  
     }
@@ -126,6 +131,7 @@
     for (id config in configData)
     {
         version = [config valueForKey:@"version"];
+        updateAddress = [config valueForKey:@"trackViewUrl"];
     }
     
     // get installed client version
@@ -136,7 +142,7 @@
     if (![version isEqualToString:@""]) {
         if (![version isEqualToString:versionNum])
         {
-            UIAlertView *createUserResponseAlert = [[UIAlertView alloc] initWithTitle:@"New Version!!" message: @"A new version of app is available to download" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Download", nil];
+            UIAlertView *createUserResponseAlert = [[UIAlertView alloc] initWithTitle:@"有新版本" message: @"软件有新版本可用，请更新！" delegate:self cancelButtonTitle:@"取消" otherButtonTitles: @"下载", nil];
             createUserResponseAlert.tag = 2;
             [createUserResponseAlert show];
         }

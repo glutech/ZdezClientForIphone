@@ -9,6 +9,9 @@
 #import "MenuViewController.h"
 #import "ECSlidingViewController.h"
 #import "MenuCell.h"
+#import "NewsService.h"
+#import "SchoolMsgService.h"
+#import "ZdezMsgService.h"
 
 @interface MenuViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -31,14 +34,29 @@
 {
     [super viewDidLoad];
     
-    NSLog(@"view did load........");
-    
     [self.slidingViewController setAnchorRightRevealAmount:190.0f];
     self.slidingViewController.underLeftWidthLayout = ECFullWidth;
+    self.slidingViewController.shouldAddPanGestureRecognizerToTopViewSnapshot = YES;
     
     self.categoryList = @[];
     
     self.usernameLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"name"];
+    
+    if ([[[NewsService alloc] init] getUnreadMsgCount] > 0) {
+        self.isNewsUnreadStatus = true;
+    } else {
+        self.isNewsUnreadStatus =false;
+    }
+    if ([[[SchoolMsgService alloc] init] getUnreadMsgCount] > 0) {
+        self.isSchoolMsgUnreadStatus = true;
+    } else {
+        self.isSchoolMsgUnreadStatus = false;
+    }
+    if ([[[ZdezMsgService alloc] init] getUnreadMsgCount] > 0) {
+        self.isZdezMsgUnreadStatus = true;
+    } else {
+        self.isZdezMsgUnreadStatus = false;
+    }
 }
 
 #pragma mark - TableView DataSource

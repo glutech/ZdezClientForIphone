@@ -59,6 +59,7 @@ typedef enum {
   ECTapping = 1 << 0,
   /** Panning will be enabled on the top view. If it is panned and released towards the reset position it will reset, otherwise it will slide towards the anchored position. */
   ECPanning = 1 << 1
+//  ECPanning = 1 << 0
 } ECResetStrategy;
 
 /** ECSlidingViewController is a view controller container that presents its child view controllers in two layers. The top layer can be panned to reveal the layers below it. */

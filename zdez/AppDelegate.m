@@ -29,24 +29,42 @@ NSString *deviceid;
         NSLog(@"userInfo: %@", pushInfoStr);
     }
     
-//    [UIApplication sharedApplication].idleTimerDisabled = NO;
+    // 开启网络状况的监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    //    self.hostReach = [[Reachability reachabilityWithHostName:@"www.apple.com"] init];
+    hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    [hostReach startNotifier];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    
-    // 判断是否已登录过，如果已登录过，则直接进入程序主界面，否则进入登录页面
-    LoginService *ls = [[LoginService alloc] init];
-    if (ls.isLogined) {
-        NSLog(@"logined....");
-        self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"initialView"];
+    CGFloat height = [[UIScreen mainScreen] bounds].size.height;
+    if (height > 500) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        
+        // 判断是否已登录过，如果已登录过，则直接进入程序主界面，否则进入登录页面
+        LoginService *ls = [[LoginService alloc] init];
+        if (ls.isLogined) {
+            self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"initialView"];
+        } else {
+            self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginView"];
+        }
+        
+        [self.window makeKeyAndVisible];
     } else {
-        self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginView"];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main35" bundle:nil];
+        
+        // 判断是否已登录过，如果已登录过，则直接进入程序主界面，否则进入登录页面
+        LoginService *ls = [[LoginService alloc] init];
+        if (ls.isLogined) {
+            self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"initialView"];
+        } else {
+            self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginView"];
+        }
+        
+        [self.window makeKeyAndVisible];
     }
-    
-    [self.window makeKeyAndVisible];
     
     return YES;
 }
@@ -80,7 +98,6 @@ NSString *deviceid;
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-	NSLog(@"My token is: %@", deviceToken);
     //deviceid = [[NSString alloc] initWithData:deviceToken  encoding:NSUTF8StringEncoding];
     deviceid = [[[[deviceToken description]
                              stringByReplacingOccurrencesOfString:@"<" withString:@""]
@@ -101,24 +118,36 @@ NSString *deviceid;
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
-//    NSInteger badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
-//    if (badge != 0) {
-//        badge ++;
-//        [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
-//    }
-//    badge ++;
-//    [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
-    
     // 判断是否已登录过，如果已登录过，则直接进入程序主界面，否则进入登录页面
     LoginService *ls = [[LoginService alloc] init];
     if (ls.isLogined) {
-        NSLog(@"logined....");
         self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"initialView"];
     } else {
         self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"loginView"];
     }
     
     [self.window makeKeyAndVisible];
+}
+
+// 连接改变
+- (void) reachabilityChanged:(NSNotification *)note
+{
+    Reachability *curReach = [note object];
+    NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
+    [self updateInterfaceWithReachability:curReach];
+}
+
+// 处理连接改变后的情况
+- (void)updateInterfaceWithReachability:(Reachability *)curReach
+{
+    // 对连接改变做出响应的处理动作
+    NetworkStatus status = [curReach currentReachabilityStatus];
+    
+    if (status == NotReachable) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"找得着" message:@"当前无网络连接" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
 }
 
 // 禁止横屏

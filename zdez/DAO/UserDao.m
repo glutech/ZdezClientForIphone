@@ -29,8 +29,6 @@
         NSAssert(NO, @"open db failed...");
     } else {
         
-        NSLog(@"creating table...");
-        
         char *err;
         
         NSString *createSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS user (userId INTEGER PRIMARY KEY , username String, name String, gender String, grade String, major String, department String, deviceId String);"];
@@ -38,10 +36,7 @@
         if (sqlite3_exec(db, [createSQL UTF8String], NULL, NULL, &err) != SQLITE_OK) {
             sqlite3_close(db);
             NSAssert1(NO, @"create table failed...,%s", err);
-        } else {
-            NSLog(@"create table success!!");
         }
-        
         sqlite3_close(db);
     }
 }
@@ -64,8 +59,6 @@
             sqlite3_stmt *statement;
             
             if (sqlite3_prepare_v2(db, [sqlStr UTF8String], -1, &statement, nil) == SQLITE_OK) {
-                
-                NSLog(@"inserting..");
                 
                 // 绑定参数
                 sqlite3_bind_int(statement, 1, user.userId);
@@ -219,8 +212,6 @@
         if (sqlite3_exec(db, [sql UTF8String], NULL, NULL, &err) != SQLITE_OK) {
             sqlite3_close(db);
             NSAssert1(NO, @"delete userInfo failed...,%s", err);
-        } else {
-            NSLog(@"delete userInfo success!!");
         }
         sqlite3_close(db);
     }

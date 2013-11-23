@@ -32,7 +32,8 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.zdezInfo.image = [UIImage imageNamed:@"zdezInfo.png"];
+    self.zdezInfo.image = [UIImage imageNamed:@"ZDEZ-CN-client.png"];
+//    self.zdezInfo.image = [UIImage imageNamed:@"zdezInfo.png"];
 }
 
 - (void)didReceiveMemoryWarning

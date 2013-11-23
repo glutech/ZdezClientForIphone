@@ -50,17 +50,12 @@
     BOOL newsUnreadStatus;
     BOOL schoolMsgUnreadStatus;
     BOOL zdezMsgUnreadStatus;
-    
-    NSInteger newsUnreadCount;
-    NSInteger schoolMsgUnreadCount;
-    NSInteger zdezMsgUnreadCount;
 }
 
 @property (nonatomic, weak) IBOutlet UINavigationItem *navigationTitle;
 @property (nonatomic, strong) NSArray *msgCategories;
 @property (nonatomic, assign) NSInteger selectedCategory;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic) Reachability *hostReach;
 
 @end
 
@@ -80,17 +75,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // 开启网络状况的监听
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-    //    self.hostReach = [[Reachability reachabilityWithHostName:@"www.apple.com"] init];
-    self.hostReach = [Reachability reachabilityWithHostName:@"www.apple.com"];
-    [self.hostReach startNotifier];
-//    [self updateInterfaceWithReachability:self.hostReach];
-    
-    newsUnreadCount = 0;
-    schoolMsgUnreadCount = 0;
-    zdezMsgUnreadCount = 0;
     
     //默认首先进入资讯频道
     self.selectedCategory = 0;
@@ -118,6 +102,22 @@
     SchoolMsgService *sMsgService = [[SchoolMsgService alloc] init];
     ZdezMsgService *zMsgService = [[ZdezMsgService alloc] init];
     
+    if ([newsService getUnreadMsgCount] > 0) {
+        newsUnreadStatus = true;
+    } else {
+        newsUnreadStatus =false;
+    }
+    if ([sMsgService getUnreadMsgCount] > 0) {
+        schoolMsgUnreadStatus = true;
+    } else {
+        schoolMsgUnreadStatus = false;
+    }
+    if ([zMsgService getUnreadMsgCount] > 0) {
+        zdezMsgUnreadStatus = true;
+    } else {
+        zdezMsgUnreadStatus = false;
+    }
+    
     // view初始化时就进行刷新，并获取数据库中最新的20条数据
     [self refreshViewBeginRefreshing:_header];
     if (self.selectedCategory == 0) {
@@ -131,11 +131,17 @@
     // 定义侧滑菜单选项
     self.msgCategories = @[@"资讯频道", @"校园频道", @"找得着"];
     self.navigationTitle.title = self.msgCategories[self.selectedCategory];
-    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"nv_bg.png"] forBarMetrics:UIBarMetricsDefault];
+    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (version >= 7.0) {
+        [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"nv_bg.png"] forBarMetrics:UIBarMetricsDefault];
+    } else {
+        [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"nv_bg_44.png"] forBarMetrics:UIBarMetricsDefault];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    
     [(MenuViewController *)self.slidingViewController.underLeftViewController setDelegate:self];
     self.delegate = (MenuViewController *)self.slidingViewController.underLeftViewController;
 }
@@ -341,11 +347,6 @@
 #pragma mark 代理方法-进入刷新状态就会执行
 - (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
 {
-    // 开始刷新的时候把所有信息的未读数和状态均初始化
-    newsUnreadCount = 0;
-    schoolMsgUnreadCount = 0;
-    zdezMsgUnreadCount = 0;
-    
     if (_header == refreshView) {
         // 下拉
         
@@ -585,25 +586,9 @@
     [self.delegate msgListViewControllerChangeMenuUnreadStatus:newsUnreadStatus isSchoolMsgUnRead:schoolMsgUnreadStatus isZdezMsgUnread:zdezMsgUnreadStatus];
 }
 
-// 连接改变
-- (void) reachabilityChanged:(NSNotification *)note
+- (IBAction)revealMenu:(id)sender
 {
-    Reachability *curReach = [note object];
-    NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
-    [self updateInterfaceWithReachability:curReach];
-}
-
-// 处理连接改变后的情况
-- (void)updateInterfaceWithReachability:(Reachability *)curReach
-{
-    // 对连接改变做出响应的处理动作
-    NetworkStatus status = [curReach currentReachabilityStatus];
-    
-    if (status == NotReachable) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"找得着" message:@"当前无网络连接" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        [alert show];
-        return;
-    }
+    [self.slidingViewController anchorTopViewTo:ECRight];
 }
 
 @end
